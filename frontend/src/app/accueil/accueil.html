@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage AutoPro - Votre Expert Automobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b35;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(26,26,46,0.9), rgba(22,33,62,0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23333" width="1200" height="600"/><circle cx="200" cy="150" r="3" fill="%23ff6b35" opacity="0.6"/><circle cx="800" cy="200" r="4" fill="%23f7931e" opacity="0.4"/><circle cx="400" cy="400" r="2" fill="%23ff6b35" opacity="0.8"/><circle cx="1000" cy="350" r="3" fill="%23f7931e" opacity="0.5"/></svg>');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a1a2e;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border-radius: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1a1a2e;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #1a1a2e;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border-radius: 15px;
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: perspective(1000px) rotateY(5deg);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,107,53,0.3), rgba(247,147,30,0.3));
+            z-index: 1;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px rgba(255,107,53,0.3);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,107,53,0.3);
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #ff6b35;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(10px);
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            color: #ff6b35;
+            margin-right: 1rem;
+            width: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f0f0f;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🔧 AutoPro</div>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#apropos">À Propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="accueil" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Garage AutoPro</h1>
+                <p>Votre expert automobile de confiance depuis 20 ans</p>
+                <a href="#contact" class="cta-button">Prendre Rendez-vous</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Nos Services</h2>
+           
+            <div class="services-grid">
+                <div class="service-card">
+                     <a href="service.html">
+                    <div class="service-icon">🔧</div>
+                    <h3>Réparation Mécanique</h3>
+                    <p>Diagnostic et réparation de tous types de pannes mécaniques avec des équipements de pointe.</p>
+                    </a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛞</div>
+                    <h3>Pneumatiques</h3>
+                    <p>Vente, montage et équilibrage de pneus toutes marques. Contrôle de pression et géométrie.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔋</div>
+                    <h3>Électricité Auto</h3>
+                    <p>Réparation système électrique, alternateur, démarreur, éclairage et diagnostic électronique.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛡️</div>
+                    <h3>Contrôle Technique</h3>
+                    <p>Préparation et accompagnement pour le contrôle technique. Contre-visite incluse.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚗</div>
+                    <h3>Entretien Périodique</h3>
+                    <p>Vidange, révision, changement filtres selon le carnet d'entretien constructeur.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">❄️</div>
+                    <h3>Climatisation</h3>
+                    <p>Recharge, réparation et entretien des systèmes de climatisation automobile.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="apropos" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>À Propos de Nous</h2>
+                    <p>Depuis plus de 20 ans, le Garage AutoPro est votre partenaire de confiance pour l'entretien et la réparation de votre véhicule.</p>
+                    <p>Notre équipe de mécaniciens qualifiés utilise les dernières technologies de diagnostic pour vous garantir un service de qualité supérieure.</p>
+                    <p>Nous intervenons sur toutes marques et tous modèles, avec un engagement fort sur la transparence des prix et la qualité du service.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number">5000+</span>
+                            <span>Clients Satisfaits</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">20</span>
+                            <span>Années d'Expérience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24h</span>
+                            <span>Dépannage d'Urgence</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span>Garantie Pièces</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <svg width="500" height="400" viewBox="0 0 500 400">
+                        <rect width="500" height="400" fill="url(#gradient1)"/>
+                        <defs>
+                            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#f7931e;stop-opacity:0.6" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="150" cy="150" r="80" fill="rgba(255,255,255,0.2)"/>
+                        <circle cx="350" cy="250" r="60" fill="rgba(255,255,255,0.15)"/>
+                        <rect x="200" y="180" width="100" height="40" rx="20" fill="rgba(255,255,255,0.3)"/>
+                        <text x="250" y="350" text-anchor="middle" fill="white" font-size="24" font-weight="bold">GARAGE AUTOPRO</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Contactez-Nous</h2>
+            <div class="contact-content">
+                <div class="contact-form">
+                    <h3>Demande de Devis</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="nom">Nom complet</label>
+                            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone">Téléphone</label>
+                            <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 56 78">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicule">Véhicule</label>
+                            <input type="text" id="vehicule" name="vehicule" placeholder="Marque, modèle, année">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Décrivez votre demande..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Envoyer la Demande</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h3>Informations Pratiques</h3>
+                    <div class="info-item">
+                        <span class="info-icon">📍</span>
+                        <div>
+                            <strong>Adresse</strong><br>
+                            123 Avenue des Mécaniciens<br>
+                            75000 Paris
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📞</span>
+                        <div>
+                            <strong>Téléphone</strong><br>
+                            01 23 45 67 89
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">✉️</span>
+                        <div>
+                            <strong>Email</strong><br>
+                            <!-- contact@autopro-garage.fr -->
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🕒</span>
+                        <div>
+                            <strong>Horaires</strong><br>
+                            Lun-Ven: 8h00-18h00<br>
+                            Sam: 8h00-12h00
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🚨</span>
+                        <div>
+                            <strong>Urgence 24h/7j</strong><br>
+                            06 98 76 54 32
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Garage AutoPro. Tous droits réservés. | Mentions légales | Politique de confidentialité</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling pour les liens de navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les cartes de service
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Gestion du formulaire
+        document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Animation de soumission
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Envoi en cours...';
+            submitBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+            
+            setTimeout(() => {
+                submitBtn.textContent = 'Message envoyé !';
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
+                    this.reset();
+                }, 2000);
+            }, 1500);
+        });
+
+        // Effet parallaxe léger sur le hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Animation des compteurs
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent.replace(/\D/g, ''));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = counter.textContent.replace(/\d+/, target);
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = counter.textContent.replace(/\d+/, Math.floor(current));
+                    }
+                }, 16);
+            });
+        }
+
+        // Observer pour déclencher l'animation des compteurs
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
+</body>
+</html>
