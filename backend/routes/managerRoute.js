@@ -69,7 +69,7 @@ router.post('/login-manager', async (req, res) => {
 
     // Récupérer les infos spécifiques selon le rôle
     let roleInfos = null;
-    if (utilisateur.role === 'manager') {
+    if (utilisateur.roleModel === 'Manager') {
       const manager = await Manager.findById(utilisateur.refId);
       if (!manager) return res.status(404).json({ error: 'Manager non trouvé' });
 

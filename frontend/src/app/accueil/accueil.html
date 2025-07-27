@@ -425,8 +425,17 @@
                 <li><a href="#services">Services</a></li>
                 <li><a href="#apropos">À Propos</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><button (click)="afficherConnexion = !afficherConnexion">
+                {{ afficherConnexion ? 'Retour' : 'Connexion' }}
+                </button></li>
             </ul>
         </nav>
+        @if (afficherConnexion) {
+        <app-connexion></app-connexion>
+        } 
+
+        
+    
     </header>
 
     <section id="accueil" class="hero">

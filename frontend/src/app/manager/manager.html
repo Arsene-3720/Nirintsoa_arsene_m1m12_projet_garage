@@ -1,1 +1,12 @@
-<p>manager works!</p>
+<div class="p-6 max-w-md mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Connexion Manager</h2>
+
+      <input [formControl]="email" type="email" placeholder="Email" class="border p-2 w-full mb-2 rounded" />
+      <input [formControl]="motDePasse" type="password" placeholder="Mot de passe" class="border p-2 w-full mb-4 rounded" />
+
+      <button (click)="seConnecter()" class="bg-blue-600 text-white px-4 py-2 rounded">Se connecter</button>
+
+      @if (erreur) {
+        <p class="text-red-500 mt-4">{{ erreur }}</p>
+      }
+</div>

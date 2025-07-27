@@ -1,0 +1,16 @@
+<h2 class="text-xl font-bold">Tableau de bord Manager</h2>
+
+<!-- Visible par tous -->
+<a routerLink="/manager/infos">Mon Profil</a>
+
+<!-- Visible uniquement pour les managers globaux -->
+@if (typeManager === 'global') {
+  <a routerLink="/manager/gestion-utilisateurs">Gérer les utilisateurs</a>
+  <a routerLink="/manager/gestion-stock">Gérer le stock</a>
+}
+
+<!-- Visible uniquement pour les managers client-mécanicien -->
+@if (typeManager === 'client-mecanicien') {
+  <a routerLink="/manager/gestion-rendezvous">Gérer les rendez-vous</a>
+  <a routerLink="/manager/gestion-mecaniciens">Suivi des mécaniciens</a>
+}
