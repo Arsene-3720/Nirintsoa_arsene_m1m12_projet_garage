@@ -11,11 +11,7 @@ const mecanicienSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  role: {
-    type: String,
-    enum: ['manager-global', 'manager-client'],
-    required: true
-    }
+  
 });
 
 module.exports = mongoose.model('Mecanicien', mecanicienSchema);

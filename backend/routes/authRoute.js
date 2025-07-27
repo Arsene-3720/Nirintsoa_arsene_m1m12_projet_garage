@@ -1,39 +1,57 @@
+// auth.routes.js
 const express = require('express');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const Client = require('../models/Client');
 const Mecanicien = require('../models/Mecanicien');
 const Manager = require('../models/Manager');
 
-// Utilitaire pour générer un token
-function generateToken(user) {
-  return jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET, // ✅ depuis .env, // 🔐 à remplacer par variable d'environnement
-    { expiresIn: '1d' }
-  );
-}
-
-// Route de connexion générique (email + motDePasse + rôle à envoyer depuis le front)
 router.post('/login', async (req, res) => {
-  const { email, motDePasse, role } = req.body;
+  const { email, motDePasse } = req.body;
 
-  let Model;
-  if (role === 'client') Model = Client;
-  else if (role === 'mecanicien') Model = Mecanicien;
-  else if (role === 'manager-global' || role === 'manager-client') Model = Manager;
-  else return res.status(400).json({ error: 'Rôle invalide' });
+  try {
+    // 1. Rechercher dans les 3 collections
+    const client = await Client.findOne({ email });
+    const mecanicien = await Mecanicien.findOne({ email });
+    const manager = await Manager.findOne({ email });
 
-  const user = await Model.findOne({ email });
-  if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' });
+    let user = null;
+    let role = null;
 
-  const valid = await bcrypt.compare(motDePasse, user.motDePasse);
-  if (!valid) return res.status(401).json({ error: 'Mot de passe incorrect' });
+    if (client) {
+      user = client;
+      role = 'client';
+    } else if (mecanicien) {
+      user = mecanicien;
+      role = 'mecanicien';
+    } else if (manager) {
+      user = manager;
+      role = manager.role; // manager-global ou manager-client
+    } else {
+      return res.status(404).json({ message: 'Compte non trouvé' });
+    }
 
-  const token = generateToken(user);
-  res.json({ token, userId: user._id, role: user.role });
+    // 2. Vérifier le mot de passe
+    const isMatch = await bcrypt.compare(motDePasse, user.motDePasse);
+    if (!isMatch) return res.status(401).json({ message: 'Mot de passe incorrect' });
+
+    // 3. Générer le token
+    const token = jwt.sign(
+      {
+        id: user._id,
+        role: role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    return res.json({ token });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Erreur serveur' });
+  }
 });
 
 module.exports = router;

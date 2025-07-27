@@ -3,15 +3,26 @@ const router = express.Router();
 const Client = require('../models/Client');
 
 // POST /clients : enregistrement
-router.post('/', async (req, res) => {
+router.post('/register-client', async (req, res) => {
   try {
-    const newClient = new Client(req.body);
-    await newClient.save();
-    res.status(201).json(newClient);
+    const { nom, prenom, email, dateNaissance, telephone, motDePasse } = req.body;
+
+    const nouveauClient = await Client.create({ nom, prenom, email, dateNaissance, telephone, motDePasse });
+
+    await Utilisateur.create({
+      email,
+      motDePasse,
+      role: 'client',
+      refId: nouveauClient._id,
+      roleModel: 'Client'
+    });
+
+    res.status(201).json({ message: 'Client inscrit avec succès' });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 });
+
 
 
 
