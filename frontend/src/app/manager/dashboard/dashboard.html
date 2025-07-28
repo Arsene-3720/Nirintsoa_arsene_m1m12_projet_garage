@@ -12,5 +12,8 @@
 <!-- Visible uniquement pour les managers client-mécanicien -->
 @if (typeManager === 'client-mecanicien') {
   <a routerLink="/manager/gestion-rendezvous">Gérer les rendez-vous</a>
-  <a routerLink="/manager/gestion-mecaniciens">Suivi des mécaniciens</a>
+  <a routerLink="/manager/dashboard/gestion-mecaniciens">Suivi des mécaniciens</a>
+  <button (click)="allerVersGestionMecaniciens()" class="cursor-pointer text-blue-600 underline">
+  Suivi des mécaniciens
+  </button>
 }

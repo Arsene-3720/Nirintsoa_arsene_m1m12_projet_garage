@@ -1,1 +1,33 @@
-<p>postulation works!</p>
+<div class="p-6 max-w-xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">Demande de postulation</h2>
+
+  <form (ngSubmit)="envoyerPostulation()" #form="ngForm">
+    <label class="block mb-2 font-semibold">Nom</label>
+    <input type="text" [(ngModel)]="nom" name="nom" class="border p-2 w-full mb-4" required />
+
+    <label class="block mb-2 font-semibold">Prénom</label>
+    <input type="text" [(ngModel)]="prenom" name="prenom" class="border p-2 w-full mb-4" />
+
+    <label class="block mb-2 font-semibold">Email</label>
+    <input type="email" [(ngModel)]="email" name="email" class="border p-2 w-full mb-4" required />
+
+    <label class="block mb-2 font-semibold">Téléphone</label>
+    <input type="text" [(ngModel)]="telephone" name="telephone" class="border p-2 w-full mb-4" />
+
+    <label class="block mb-2 font-semibold">Spécialités (séparées par des virgules)</label>
+    <input type="text" [(ngModel)]="specialites" name="specialites" class="border p-2 w-full mb-4" />
+
+    <label class="block mb-2 font-semibold">Expérience</label>
+    <textarea [(ngModel)]="experience" name="experience" class="border p-2 w-full mb-4"></textarea>
+
+    <label class="block mb-2 font-semibold">CV (PDF)</label>
+    <input type="file" (change)="chargerCV($event)" class="mb-4" />
+
+    <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit" [disabled]="form.invalid">Soumettre</button>
+  </form>
+
+  @if (message) {
+    <p class="mt-4 text-green-600">{{ message }}</p>
+  }
+</div>
+

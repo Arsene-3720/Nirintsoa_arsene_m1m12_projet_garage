@@ -1,25 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const Mecanicien = require('../models/Mecanicien');
-
-router.post('/postuler-mecanicien', async (req, res) => {
-  try {
-    const { nom, prenom, email, telephone, specialites } = req.body;
-
-    const exist = await PostulationMecanicien.findOne({ email });
-    if (exist) return res.status(400).json({ message: 'Email déjà utilisé' });
-
-    const postulation = await PostulationMecanicien.create({ nom, prenom, email, telephone, specialites });
-
-    res.status(201).json({ message: 'Postulation envoyée. En attente de validation.' });
-  } catch (err) {
-    res.status(500).json({ message: 'Erreur serveur', error: err.message });
-  }
-});
+const PostulationMecanicien = require('../models/PostulMecanicien');
+const Utilisateur = require('../models/utilisateur');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 
 // POST /mecaniciens → Création de compte une fois accepté
-router.post('/register-mecanicien', async (req, res) => {
+
+
+// Stockage des images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, '../uploads/profil_mecaniciens');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    // ex : cv-<timestamp>-nomoriginal.pdf
+    cb(null, 'images-' + Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
+
+router.post('/register-mecanicien', upload.single('images'), async (req, res) => {
   try {
     const { email, motDePasse } = req.body;
 
@@ -36,7 +44,8 @@ router.post('/register-mecanicien', async (req, res) => {
       email: postulation.email,
       telephone: postulation.telephone,
       specialites: postulation.specialites,
-      motDePasse
+      motDePasse,
+      photo: req.file ? `/uploads/profil_mecaniciens/${req.file.filename}` : undefined
     });
 
     await Utilisateur.create({
@@ -47,19 +56,20 @@ router.post('/register-mecanicien', async (req, res) => {
       roleModel: 'Mecanicien'
     });
 
-    // Optionnel : supprimer la postulation
     await PostulationMecanicien.deleteOne({ _id: postulation._id });
 
     res.status(201).json({ message: 'Inscription du mécanicien réussie' });
   } catch (err) {
+    console.error('Erreur serveur :', err);
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 });
 
 
 
+
 // POST /mecaniciens/login → Connexion du mécanicien
-router.post('/login', async (req, res) => {
+router.post('/login-mecanicien', async (req, res) => {
   const { email, password } = req.body;
   try {
     const mecanicien = await Mecanicien.findOne({ email });
@@ -72,7 +82,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-module.exports = router;
+
 
 
 router.get('/statut-postulation/:email', async (req, res) => {
@@ -87,3 +97,5 @@ router.get('/statut-postulation/:email', async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: err.message });
   }
 });
+
+module.exports = router;

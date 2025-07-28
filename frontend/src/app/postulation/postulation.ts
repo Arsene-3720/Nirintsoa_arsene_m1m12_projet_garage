@@ -1,51 +1,62 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { inject } from '@angular/core';
 
 @Component({
-  selector: 'mecanicien-verif-postulation',
   standalone: true,
-  template: `
-    <div class="p-4">
-      <h2 class="text-xl font-bold mb-2">Vérification de votre statut</h2>
-      <!-- <input type="email" [(ngModel)]="email" placeholder="Entrez votre email" class="border p-2 rounded" /> -->
-      <button (click)="verifierStatut()" class="bg-blue-500 text-white p-2 rounded ml-2">Vérifier</button>
-
-      @if (message) {
-        <p class="mt-4 text-gray-700">{{ message }}</p>
-      }
-    </div>
-  `,
-  imports: [],
+  selector: 'app-postulation-mecanicien',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './postulation.html',
 })
-export class MecanicienVerifPostulationComponent {
+export class PostulationMecanicienComponent {
+  nom = '';
+  prenom = '';
   email = '';
+  telephone = '';
+  specialites = '';
+  experience = '';
+  cv: File | null = null;
   message = '';
-  http = inject(HttpClient);
-  router = inject(Router);
 
-  verifierStatut() {
-    this.http.get<{ statut: string }>(`http://localhost:3000/api/statut-postulation/${this.email}`).subscribe({
-      next: (res) => {
-        const statut = res.statut;
-        if (statut === 'accepté') {
-          this.router.navigate(['/inscription-mecanicien'], { queryParams: { email: this.email } });
-        } else if (statut === 'en attente') {
-          this.message = 'Votre demande est encore en attente de validation.';
-        } else if (statut === 'rejeté') {
-          this.message = 'Votre demande a été rejetée par le manager.';
-        } else {
-          this.message = 'Statut inconnu.';
-        }
-      },
-      error: (err) => {
-        if (err.status === 404) {
-          this.router.navigate(['/postulation-mecanicien'], { queryParams: { email: this.email } });
-        } else {
-          this.message = 'Erreur serveur.';
-        }
-      },
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  constructor() {
+    this.route.queryParams.subscribe(params => {
+      this.email = params['email'] || '';
     });
+  }
+
+  chargerCV(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.cv = input.files[0];
+    }
+  }
+
+  envoyerPostulation() {
+    const formData = new FormData();
+    formData.append('nom', this.nom);
+    formData.append('prenom', this.prenom);
+    formData.append('email', this.email);
+    formData.append('telephone', this.telephone);
+    formData.append('experience', this.experience);
+    formData.append('specialites', this.specialites);
+    if (this.cv) formData.append('cv', this.cv);
+
+    this.http.post('http://localhost:5000/api/PostulMeca/postuler-mecanicien', formData)
+      .subscribe({
+        next: res => {
+          this.message = 'Votre postulation a été envoyée avec succès.';
+          this.router.navigate(['/verifier-statut'], { queryParams: { email: this.email } });
+        },
+        error: err => {
+          this.message = 'Erreur lors de la postulation : ' + err.error?.message || err.message;
+        }
+      });
   }
 }

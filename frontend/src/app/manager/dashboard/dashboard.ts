@@ -22,4 +22,8 @@ export class DashboardManagerComponent implements OnInit {
       this.router.navigate(['/connexion-manager']);
     }
   }
+
+  allerVersGestionMecaniciens() {
+    this.router.navigate(['/manager/dashboard/gestion-mecanicien']);
+  }
 }
