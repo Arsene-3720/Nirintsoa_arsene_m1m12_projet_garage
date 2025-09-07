@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="fr">
+<!-- <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage AutoPro - Votre Expert Automobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b35;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(26,26,46,0.9), rgba(22,33,62,0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23333" width="1200" height="600"/><circle cx="200" cy="150" r="3" fill="%23ff6b35" opacity="0.6"/><circle cx="800" cy="200" r="4" fill="%23f7931e" opacity="0.4"/><circle cx="400" cy="400" r="2" fill="%23ff6b35" opacity="0.8"/><circle cx="1000" cy="350" r="3" fill="%23f7931e" opacity="0.5"/></svg>');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Services Section */
+        /* CSS à ajouter à votre fichier de styles existant */
+
+/* Amélioration de la section services */
+.services-container {
+    position: relative;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation des cartes de services lors de la réorganisation */
+.services-grid.reorganized {
+    margin-bottom: 3rem;
+}
+
+/* Amélioration des cartes de services */
+.service-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+/* État actif de la carte */
+.service-card.active {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    transform: scale(1.05) translateY(-10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    z-index: 2;
+}
+
+.service-card.active .service-icon {
+    color: white;
+    transform: scale(1.2) rotate(10deg);
+}
+
+.service-card.active h3,
+.service-card.active p {
+    color: white;
+}
+
+/* Effet de brillance sur hover */
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.service-card:hover::before {
+    left: 100%;
+}
+
+.service-card:hover:not(.active) {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+}
+
+/* Section des sous-services en pleine largeur */
+.sous-services-section {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    margin: 2rem 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(-30px) scale(0.95);
+    border: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.sous-services-section.show {
+    max-height: 2000px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* En-tête des sous-services */
+.sous-services-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #ff6b35 100%);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.sous-services-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1.5" fill="white" opacity="0.05"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.1"/></svg>');
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(100px); }
+}
+
+.sous-services-header h3 {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+    position: relative;
+    z-index: 1;
+}
+
+.sous-services-header p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Bouton de fermeture amélioré */
+.close-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.close-button:hover {
+    background: rgba(255,255,255,0.25);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Grille des sous-services */
+.sous-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 2.5rem;
+}
+
+/* Cartes des sous-services */
+.sous-service-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border-left: 5px solid #ff6b35;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.sous-service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -5px;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #ff6b35, #f7931e);
+    transition: all 0.3s ease;
+}
+
+.sous-service-card:hover {
+    transform: translateX(10px) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.2);
+    border-left-color: #f7931e;
+}
+
+.sous-service-card:hover::before {
+    width: 8px;
+}
+
+.sous-service-card h4 {
+    color: #1a1a2e;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+}
+
+/* Détails du sous-service */
+.sous-service-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.8rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #666;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.detail-icon {
+    font-size: 1.1rem;
+    padding: 0.3rem;
+    background: rgba(255, 107, 53, 0.1);
+    border-radius: 8px;
+    color: #ff6b35;
+}
+
+.prix {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ff6b35;
+    background: rgba(255, 107, 53, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+}
+
+/* Bouton rendez-vous amélioré */
+.rdv-button {
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+}
+
+.rdv-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.rdv-button:hover::before {
+    left: 100%;
+}
+
+.rdv-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255, 107, 53, 0.4);
+    background: linear-gradient(45deg, #f7931e, #ff6b35);
+}
+
+.rdv-button:active {
+    transform: translateY(-1px);
+}
+
+/* Animation d'apparition échelonnée des cartes */
+.sous-service-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideInUp 0.6s ease forwards;
+}
+
+.sous-service-card:nth-child(1) { animation-delay: 0.1s; }
+.sous-service-card:nth-child(2) { animation-delay: 0.2s; }
+.sous-service-card:nth-child(3) { animation-delay: 0.3s; }
+.sous-service-card:nth-child(4) { animation-delay: 0.4s; }
+.sous-service-card:nth-child(5) { animation-delay: 0.5s; }
+.sous-service-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive amélioré */
+@media (max-width: 768px) {
+    .sous-services-grid {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .sous-service-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .sous-services-header {
+        padding: 2rem 1rem;
+    }
+
+    .sous-services-header h3 {
+        font-size: 1.8rem;
+    }
+
+    .close-button {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Amélioration pour très petits écrans */
+@media (max-width: 480px) {
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    .sous-service-card {
+        padding: 1.5rem;
+    }
+    
+    .rdv-button {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #1a1a2e;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border-radius: 15px;
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: perspective(1000px) rotateY(5deg);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,107,53,0.3), rgba(247,147,30,0.3));
+            z-index: 1;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px rgba(255,107,53,0.3);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,107,53,0.3);
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #ff6b35;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(10px);
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            color: #ff6b35;
+            margin-right: 1rem;
+            width: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f0f0f;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head> -->
+<body>
+    <!-- <header>
+        <nav class="container">
+            <div class="logo">🔧 AutoPro</div>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#apropos">À Propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button (click)="afficherConnexion = !afficherConnexion">
+                {{ afficherConnexion ? 'Retour' : 'Connexion' }}
+                </button></li>
+            </ul>
+        </nav>
+        @if (afficherConnexion) {
+        <app-connexion></app-connexion>
+        } 
+
+        
+    
+    </header> -->
+
+    <!-- <section id="accueil" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Garage AutoPro</h1>
+                <p>Votre expert automobile de confiance depuis 20 ans</p>
+                <a href="#contact" class="cta-button">Prendre Rendez-vous</a>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Nos Services</h2>
+           
+            <div class="services-grid">
+                @for (s of services(); track s._id) {
+                    <div class="service-card">
+                    <a (click)="toggleSousServices(s._id!)">
+                        <div class="service-icon">{{ '🔧' }}</div>
+                        <h3>{{ s.nom }}</h3>
+                        <p>{{ s.description }}</p>
+                    </a>
+
+                    
+                    @if (activeServiceId() === s._id) {
+                        <ul>
+                        @for (ss of getSousServicesPour(s._id); track ss._id) {
+                            <li>{{ ss.nom }} - {{ ss.dureeEstimee }} min - {{ ss.prix }} Ar</li>
+                        }
+
+                        </ul>
+                    }
+                    </div>
+                }
+            </div>
+
+        </div>
+    </section> -->
+
+    <!-- <section id="apropos" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>À Propos de Nous</h2>
+                    <p>Depuis plus de 20 ans, le Garage AutoPro est votre partenaire de confiance pour l'entretien et la réparation de votre véhicule.</p>
+                    <p>Notre équipe de mécaniciens qualifiés utilise les dernières technologies de diagnostic pour vous garantir un service de qualité supérieure.</p>
+                    <p>Nous intervenons sur toutes marques et tous modèles, avec un engagement fort sur la transparence des prix et la qualité du service.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number">5000+</span>
+                            <span>Clients Satisfaits</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">20</span>
+                            <span>Années d'Expérience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24h</span>
+                            <span>Dépannage d'Urgence</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span>Garantie Pièces</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <svg width="500" height="400" viewBox="0 0 500 400">
+                        <rect width="500" height="400" fill="url(#gradient1)"/>
+                        <defs>
+                            <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:#f7931e;stop-opacity:0.6" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="150" cy="150" r="80" fill="rgba(255,255,255,0.2)"/>
+                        <circle cx="350" cy="250" r="60" fill="rgba(255,255,255,0.15)"/>
+                        <rect x="200" y="180" width="100" height="40" rx="20" fill="rgba(255,255,255,0.3)"/>
+                        <text x="250" y="350" text-anchor="middle" fill="white" font-size="24" font-weight="bold">GARAGE AUTOPRO</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Contactez-Nous</h2>
+            <div class="contact-content">
+                <div class="contact-form">
+                    <h3>Demande de Devis</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="nom">Nom complet</label>
+                            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone">Téléphone</label>
+                            <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 56 78">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicule">Véhicule</label>
+                            <input type="text" id="vehicule" name="vehicule" placeholder="Marque, modèle, année">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Décrivez votre demande..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Envoyer la Demande</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h3>Informations Pratiques</h3>
+                    <div class="info-item">
+                        <span class="info-icon">📍</span>
+                        <div>
+                            <strong>Adresse</strong><br>
+                            123 Avenue des Mécaniciens<br>
+                            75000 Paris
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📞</span>
+                        <div>
+                            <strong>Téléphone</strong><br>
+                            01 23 45 67 89
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">✉️</span>
+                        <div>
+                            <strong>Email</strong><br>
+                            
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🕒</span>
+                        <div>
+                            <strong>Horaires</strong><br>
+                            Lun-Ven: 8h00-18h00<br>
+                            Sam: 8h00-12h00
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🚨</span>
+                        <div>
+                            <strong>Urgence 24h/7j</strong><br>
+                            06 98 76 54 32
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- <footer>
+        <div class="container">
+            <p>&copy; 2025 Garage AutoPro. Tous droits réservés. | Mentions légales | Politique de confidentialité</p>
+        </div>
+    </footer> -->
+
+    <!-- <script>
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observer les cartes de service
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Gestion du formulaire
+        document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Animation de soumission
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Envoi en cours...';
+            submitBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+            
+            setTimeout(() => {
+                submitBtn.textContent = 'Message envoyé !';
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
+                    this.reset();
+                }, 2000);
+            }, 1500);
+        });
+
+        // Effet parallaxe léger sur le hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Animation des compteurs
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent.replace(/\D/g, ''));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = counter.textContent.replace(/\d+/, target);
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = counter.textContent.replace(/\d+/, Math.floor(current));
+                    }
+                }, 16);
+            });
+        }
+
+        // Observer pour déclencher l'animation des compteurs
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script> -->
+</body>
+</html>

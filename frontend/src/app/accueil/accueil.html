@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garage AutoPro - Votre Expert Automobile</title>
+    <title>Garage AutoPro - Expert Automobile</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
@@ -24,45 +24,50 @@
             padding: 0 20px;
         }
 
-        /* Header */
+        /* Header & Navigation */
         header {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #ff6b35;
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { text-shadow: 0 0 10px #ff6b35; }
+            to { text-shadow: 0 0 20px #ff6b35, 0 0 30px #ff6b35; }
         }
 
         .nav-links {
             display: flex;
             list-style: none;
+            align-items: center;
             gap: 2rem;
         }
 
         .nav-links a {
             color: white;
             text-decoration: none;
+            font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a:hover {
@@ -75,9 +80,9 @@
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            background: #ff6b35;
             transition: width 0.3s ease;
         }
 
@@ -85,63 +90,126 @@
             width: 100%;
         }
 
+        .nav-links button {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .nav-links button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(26,26,46,0.9), rgba(22,33,62,0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23333" width="1200" height="600"/><circle cx="200" cy="150" r="3" fill="%23ff6b35" opacity="0.6"/><circle cx="800" cy="200" r="4" fill="%23f7931e" opacity="0.4"/><circle cx="400" cy="400" r="2" fill="%23ff6b35" opacity="0.8"/><circle cx="1000" cy="350" r="3" fill="%23f7931e" opacity="0.5"/></svg>');
-            background-size: cover;
             height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,0 1000,300 1000,1000 0,700"/></svg>');
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-content {
             text-align: center;
             color: white;
+            z-index: 2;
             position: relative;
+            animation: fadeInUp 1s ease;
         }
 
-        .hero-content h1 {
-            font-size: 3.5rem;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
             margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.5s forwards;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
         }
 
-        .hero-content p {
+        @keyframes titleGlow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.3); }
+        }
+
+        .hero p {
             font-size: 1.3rem;
             margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.7s forwards;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
         }
 
         .cta-button {
             display: inline-block;
             background: linear-gradient(45deg, #ff6b35, #f7931e);
             color: white;
-            padding: 15px 30px;
+            padding: 1rem 2rem;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.9s forwards;
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+            animation: fadeInUp 1s ease 0.6s both, pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3); }
+            50% { box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6), 0 0 0 10px rgba(255, 107, 53, 0.1); }
+            100% { box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3); }
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
         }
 
         /* Services Section */
         .services {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            position: relative;
         }
 
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
-            color: #1a1a2e;
+            color: #333;
             position: relative;
+            animation: fadeInUp 1s ease;
         }
 
         .section-title::after {
@@ -160,18 +228,19 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-top: 4rem;
+            margin-top: 3rem;
         }
 
         .service-card {
             background: white;
             padding: 2rem;
             border-radius: 20px;
-            text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            animation: fadeInUp 1s ease;
         }
 
         .service-card::before {
@@ -181,8 +250,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: all 0.6s ease;
         }
 
         .service-card:hover::before {
@@ -190,26 +259,98 @@
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         .service-icon {
             font-size: 3rem;
-            color: #ff6b35;
+            text-align: center;
             margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
         .service-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
-            color: #1a1a2e;
+            color: #333;
+            text-align: center;
+        }
+
+        .service-card p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .service-card ul {
+            list-style: none;
+            margin-top: 1rem;
+            animation: slideDown 0.5s ease;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                max-height: 300px;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .service-card li:hover {
+            color: #ff6b35;
+            transform: translateX(10px);
+        }
+
+        .service-card li:last-child {
+            border-bottom: none;
         }
 
         /* About Section */
         .about {
-            padding: 100px 0;
-            background: white;
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle fill="rgba(255,255,255,0.1)" cx="200" cy="200" r="100"/><circle fill="rgba(255,255,255,0.05)" cx="800" cy="800" r="150"/></svg>');
+            animation: floatReverse 8s ease-in-out infinite;
+        }
+
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
         }
 
         .about-content {
@@ -217,84 +358,130 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-text {
+            animation: fadeInLeft 1s ease;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .about-text h2 {
             font-size: 2.5rem;
             margin-bottom: 2rem;
-            color: #1a1a2e;
+            color: white;
         }
 
         .about-text p {
-            font-size: 1.1rem;
             margin-bottom: 1.5rem;
-            line-height: 1.8;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.7;
         }
 
         .stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
         .stat-item {
             text-align: center;
-            padding: 1rem;
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
-            color: white;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
             border-radius: 15px;
-            transform: perspective(1000px) rotateY(0deg);
-            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease;
         }
 
         .stat-item:hover {
-            transform: perspective(1000px) rotateY(5deg);
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
         }
 
         .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
             display: block;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 0.5rem;
+            animation: countUp 2s ease;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .about-image {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInRight 1s ease;
         }
 
-        .about-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .about-image svg {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,107,53,0.3), rgba(247,147,30,0.3));
-            z-index: 1;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+            animation: svgFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes svgFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
 
         /* Contact Section */
         .contact {
-            padding: 100px 0;
+            padding: 6rem 0;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
+            position: relative;
         }
 
         .contact-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
+            margin-top: 3rem;
         }
 
         .contact-form {
             background: rgba(255,255,255,0.1);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 20px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInLeft 1s ease;
+        }
+
+        .contact-form h3 {
+            margin-bottom: 2rem;
+            color: #ff6b35;
+            font-size: 1.5rem;
         }
 
         .form-group {
@@ -304,109 +491,129 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #fff;
+            color: #ccc;
+            font-weight: 500;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
-            border: none;
+            padding: 1rem;
+            border: 2px solid rgba(255,255,255,0.2);
             border-radius: 10px;
             background: rgba(255,255,255,0.1);
             color: white;
-            backdrop-filter: blur(5px);
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            background: rgba(255,255,255,0.2);
-            box-shadow: 0 0 20px rgba(255,107,53,0.3);
+            border-color: #ff6b35;
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.02);
         }
 
         .form-group input::placeholder,
         .form-group textarea::placeholder {
-            color: rgba(255,255,255,0.7);
+            color: #aaa;
         }
 
         .submit-btn {
+            width: 100%;
             background: linear-gradient(45deg, #ff6b35, #f7931e);
             color: white;
-            padding: 12px 30px;
+            padding: 1rem 2rem;
             border: none;
-            border-radius: 25px;
-            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.3);
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255,107,53,0.3);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .contact-info {
+            animation: fadeInRight 1s ease;
         }
 
         .contact-info h3 {
-            font-size: 1.8rem;
             margin-bottom: 2rem;
             color: #ff6b35;
+            font-size: 1.5rem;
         }
 
         .info-item {
             display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease;
         }
 
         .info-item:hover {
+            background: rgba(255,255,255,0.1);
             transform: translateX(10px);
         }
 
         .info-icon {
             font-size: 1.5rem;
-            color: #ff6b35;
             margin-right: 1rem;
-            width: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        .info-item strong {
+            color: #ff6b35;
         }
 
         /* Footer */
         footer {
-            background: #0f0f0f;
-            color: white;
+            background: #1a1a2e;
+            color: #ccc;
             text-align: center;
             padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Animations on scroll */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                flex-direction: column;
+                gap: 1rem;
             }
 
-            .hero-content h1 {
+            .hero h1 {
                 font-size: 2.5rem;
             }
 
-            .about-content {
+            .about-content,
+            .contact-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
 
-            .contact-content {
+            .services-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -414,9 +621,49 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeOut 1s ease 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #ff6b35;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+
     <header>
         <nav class="container">
             <div class="logo">🔧 AutoPro</div>
@@ -425,17 +672,19 @@
                 <li><a href="#services">Services</a></li>
                 <li><a href="#apropos">À Propos</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><button (click)="afficherConnexion = !afficherConnexion">
-                {{ afficherConnexion ? 'Retour' : 'Connexion' }}
-                </button></li>
+                <li>
+                    <button (click)="toggleConnexion()">
+                        {{ (authService.isConnected$ | async) ? 'Déconnexion' : (afficherConnexion ? 'Retour' : 'Connexion') }}
+                    </button>
+                </li>
             </ul>
         </nav>
-        @if (afficherConnexion) {
-        <app-connexion></app-connexion>
-        } 
-
-        
-    
+        @if (afficherConnexion && !(authService.isConnected$ | async)) {
+            <app-connexion></app-connexion>
+        }
+        <div id="connexionPanel" [style.display]="afficherConnexion ? 'block' : 'none'">
+            <!-- Le contenu du panneau de connexion sera géré par le JS -->
+        </div>
     </header>
 
     <section id="accueil" class="hero">
@@ -443,7 +692,9 @@
             <div class="hero-content">
                 <h1>Garage AutoPro</h1>
                 <p>Votre expert automobile de confiance depuis 20 ans</p>
-                <a href="#contact" class="cta-button">Prendre Rendez-vous</a>
+                <a [routerLink]="['/rendezvous']" class="cta-button">
+                    Prendre Rendez-vous
+                </a>
             </div>
         </div>
     </section>
@@ -451,40 +702,40 @@
     <section id="services" class="services">
         <div class="container">
             <h2 class="section-title">Nos Services</h2>
-           
-            <div class="services-grid">
-                <div class="service-card">
-                     <a href="service.html">
+            
+            <div class="services-grid" id="servicesGrid">
+                <!-- Les services seront injectés ici par Angular -->
+                <!-- Template pour référence:
+                <div class="service-card" onclick="toggleSousServices('serviceId')">
                     <div class="service-icon">🔧</div>
-                    <h3>Réparation Mécanique</h3>
-                    <p>Diagnostic et réparation de tous types de pannes mécaniques avec des équipements de pointe.</p>
+                    <h3>Nom du Service</h3>
+                    <p>Description du service</p>
+                    <ul id="sousServices-serviceId" style="display: none;">
+                        <li>Sous-service - 30 min - 50€</li>
+                    </ul>
+                </div>
+                -->
+                @for (s of services(); track s._id) {
+                    <div class="service-card">
+                    <a (click)="toggleSousServices(s._id!)">
+                        <div class="service-icon">{{ '🔧' }}</div>
+                        <h3>{{ s.nom }}</h3>
+                        <p>{{ s.description }}</p>
                     </a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🛞</div>
-                    <h3>Pneumatiques</h3>
-                    <p>Vente, montage et équilibrage de pneus toutes marques. Contrôle de pression et géométrie.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🔋</div>
-                    <h3>Électricité Auto</h3>
-                    <p>Réparation système électrique, alternateur, démarreur, éclairage et diagnostic électronique.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🛡️</div>
-                    <h3>Contrôle Technique</h3>
-                    <p>Préparation et accompagnement pour le contrôle technique. Contre-visite incluse.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🚗</div>
-                    <h3>Entretien Périodique</h3>
-                    <p>Vidange, révision, changement filtres selon le carnet d'entretien constructeur.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">❄️</div>
-                    <h3>Climatisation</h3>
-                    <p>Recharge, réparation et entretien des systèmes de climatisation automobile.</p>
-                </div>
+
+                    
+                    @if (activeServiceId() === s._id) {
+                        <ul>
+                        @for (ss of getSousServicesPour(s._id); track ss._id) {
+                            <li>{{ ss.nom }} - {{ ss.dureeEstimee }} min - {{ ss.prix }} Ar 
+                                <button [routerLink]="['/service', ss._id]">plus d'infos</button>
+                            </li>
+                        }
+
+                        </ul>
+                    }
+                    </div>
+                }
             </div>
         </div>
     </section>
@@ -541,7 +792,7 @@
             <div class="contact-content">
                 <div class="contact-form">
                     <h3>Demande de Devis</h3>
-                    <form>
+                    <form onsubmit="handleFormSubmit(event)">
                         <div class="form-group">
                             <label for="nom">Nom complet</label>
                             <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
@@ -587,7 +838,7 @@
                         <span class="info-icon">✉️</span>
                         <div>
                             <strong>Email</strong><br>
-                            <!-- contact@autopro-garage.fr -->
+                            contact@autopro-garage.fr
                         </div>
                     </div>
                     <div class="info-item">
@@ -617,7 +868,185 @@
     </footer>
 
     <script>
-        // Smooth scrolling pour les liens de navigation
+        // Variables pour gérer l'état de connexion
+        let afficherConnexion = false;
+        let activeServiceId = null;
+
+        // Fonction pour basculer entre les onglets connexion/inscription
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            // Réinitialiser les onglets
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabBtns[0].classList.add('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabBtns[1].classList.add('active');
+            }
+        }
+
+        // Fonction pour gérer la connexion
+        function handleLogin(event) {
+            event.preventDefault();
+            const form = event.target;
+            const email = form.email.value;
+            const password = form.password.value;
+            
+            // Animation de chargement
+            const button = form.querySelector('.auth-btn');
+            const originalText = button.textContent;
+            button.textContent = 'Connexion...';
+            button.style.background = 'linear-gradient(45deg, #6c757d, #495057)';
+            
+            // Simulation d'appel API (remplacer par votre logique Angular)
+            setTimeout(() => {
+                // Exemple de validation simple
+                if (email && password) {
+                    button.textContent = 'Connecté !';
+                    button.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                    
+                    // Simuler une connexion réussie
+                    setTimeout(() => {
+                        alert(`Bienvenue ${email} !`);
+                        toggleConnexion(); // Fermer le panneau
+                        form.reset();
+                        button.textContent = originalText;
+                        button.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
+                    }, 1000);
+                } else {
+                    button.textContent = 'Erreur !';
+                    button.style.background = 'linear-gradient(45deg, #dc3545, #c82333)';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
+                    }, 2000);
+                }
+            }, 1500);
+        }
+
+        // Fonction pour gérer l'inscription
+        function handleRegister(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Validation des mots de passe
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            if (password !== confirmPassword) {
+                alert('Les mots de passe ne correspondent pas !');
+                return;
+            }
+            
+            // Animation de chargement
+            const button = form.querySelector('.auth-btn');
+            const originalText = button.textContent;
+            button.textContent = 'Création...';
+            button.style.background = 'linear-gradient(45deg, #6c757d, #495057)';
+            
+            // Simulation d'appel API
+            setTimeout(() => {
+                button.textContent = 'Compte créé !';
+                button.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                
+                setTimeout(() => {
+                    alert(`Compte créé avec succès pour ${formData.get('email')} !`);
+                    switchTab('login'); // Basculer vers la connexion
+                    button.textContent = originalText;
+                    button.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
+                    form.reset();
+                }, 1000);
+            }, 1500);
+        }
+
+        // Connexion avec Google
+        function loginWithGoogle() {
+            alert('Redirection vers Google OAuth (à implémenter)');
+            // Ici vous pourrez intégrer Google OAuth
+        }
+
+        // Connexion avec Facebook
+        function loginWithFacebook() {
+            alert('Redirection vers Facebook OAuth (à implémenter)');
+            // Ici vous pourrez intégrer Facebook OAuth
+        }
+
+        // Fermer le panneau en cliquant à l'extérieur
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('connexionPanel');
+            const button = event.target.closest('button');
+            
+            if (afficherConnexion && 
+                !panel.contains(event.target) && 
+                (!button || !button.textContent.includes('Connexion') && !button.textContent.includes('Retour'))) {
+                toggleConnexion();
+            }
+        });
+        function toggleConnexion() {
+            afficherConnexion = !afficherConnexion;
+            const panel = document.getElementById('connexionPanel');
+            const text = document.getElementById('connexionText');
+            
+            if (afficherConnexion) {
+                panel.style.display = 'block';
+                text.textContent = 'Retour';
+            } else {
+                panel.style.display = 'none';
+                text.textContent = 'Connexion';
+            }
+        }
+
+        // Fonction pour basculer l'affichage des sous-services
+        function toggleSousServices(serviceId) {
+            const sousServicesList = document.getElementById(`sousServices-${serviceId}`);
+            
+            if (activeServiceId === serviceId) {
+                // Fermer si déjà ouvert
+                sousServicesList.style.display = 'none';
+                activeServiceId = null;
+            } else {
+                // Fermer tous les autres
+                document.querySelectorAll('[id^="sousServices-"]').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Ouvrir celui sélectionné
+                sousServicesList.style.display = 'block';
+                activeServiceId = serviceId;
+            }
+        }
+
+        // Fonction pour gérer la soumission du formulaire
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Animation de succès
+            const button = event.target.querySelector('.submit-btn');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Envoi en cours...';
+            button.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+            
+            setTimeout(() => {
+                button.textContent = 'Message envoyé !';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
+                    event.target.reset();
+                }, 2000);
+            }, 1500);
+        }
+
+        // Smooth scroll pour les liens de navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -640,85 +1069,204 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('animate');
                 }
             });
         }, observerOptions);
 
-        // Observer les cartes de service
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease';
-            observer.observe(card);
+        // Observer tous les éléments animables
+        document.addEventListener('DOMContentLoaded', () => {
+            const animateElements = document.querySelectorAll('.service-card, .stat-item, .info-item');
+            animateElements.forEach(el => {
+                el.classList.add('animate-on-scroll');
+                observer.observe(el);
+            });
         });
 
-        // Gestion du formulaire
-        document.querySelector('.contact-form form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Animation de soumission
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Envoi en cours...';
-            submitBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
-            
-            setTimeout(() => {
-                submitBtn.textContent = 'Message envoyé !';
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
-                    this.reset();
-                }, 2000);
-            }, 1500);
-        });
-
-        // Effet parallaxe léger sur le hero
+        // Parallax effect pour les sections
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            const rate = scrolled * -0.5;
+            
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${rate}px)`;
             }
         });
 
-        // Animation des compteurs
+        // Animation des compteurs dans les statistiques
         function animateCounters() {
             const counters = document.querySelectorAll('.stat-number');
+            const speed = 200;
+
             counters.forEach(counter => {
-                const target = parseInt(counter.textContent.replace(/\D/g, ''));
-                const duration = 2000;
-                const step = target / (duration / 16);
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += step;
-                    if (current >= target) {
-                        counter.textContent = counter.textContent.replace(/\d+/, target);
-                        clearInterval(timer);
+                const animate = () => {
+                    const value = +counter.getAttribute('data-target') || +counter.innerText.replace(/\D/g, '');
+                    const data = +counter.innerText.replace(/\D/g, '');
+                    
+                    const time = value / speed;
+                    if (data < value) {
+                        counter.innerText = Math.ceil(data + time) + counter.innerText.replace(/\d/g, '').replace('+', '');
+                        setTimeout(animate, 1);
                     } else {
-                        counter.textContent = counter.textContent.replace(/\d+/, Math.floor(current));
+                        counter.innerText = counter.getAttribute('data-original') || counter.innerText;
                     }
-                }, 16);
+                };
+                
+                // Stocker la valeur originale
+                counter.setAttribute('data-original', counter.innerText);
+                counter.setAttribute('data-target', counter.innerText.replace(/\D/g, ''));
+                
+                // Observer l'élément pour déclencher l'animation
+                const counterObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animate();
+                            counterObserver.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                counterObserver.observe(counter);
             });
         }
 
-        // Observer pour déclencher l'animation des compteurs
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    statsObserver.unobserve(entry.target);
-                }
+        // Effet de particules flottantes
+        function createFloatingParticles() {
+            const hero = document.querySelector('.hero');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 4 + 2}px;
+                    height: ${Math.random() * 4 + 2}px;
+                    background: rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2});
+                    border-radius: 50%;
+                    pointer-events: none;
+                    animation: float ${Math.random() * 3 + 4}s ease-in-out infinite;
+                    animation-delay: ${Math.random() * 2}s;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                hero.appendChild(particle);
+            }
+        }
+
+        // Effet de hover pour les cartes de service
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02) rotateX(5deg)';
+                    this.style.boxShadow = '0 25px 50px rgba(0,0,0,0.2)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
+                    this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                });
             });
         });
 
-        const statsSection = document.querySelector('.stats');
-        if (statsSection) {
-            statsObserver.observe(statsSection);
-        }
+        // Initialisation des animations et effets
+        window.addEventListener('load', () => {
+            animateCounters();
+            createFloatingParticles();
+            
+            // Masquer le loader
+            setTimeout(() => {
+                document.querySelector('.loading').style.display = 'none';
+            }, 2500);
+        });
+
+        // Gestion du redimensionnement de la fenêtre
+        window.addEventListener('resize', () => {
+            // Réajuster les animations si nécessaire
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Désactiver certaines animations coûteuses sur mobile
+                document.querySelectorAll('.service-card').forEach(card => {
+                    card.style.transform = 'none';
+                });
+            }
+        });
+
+        // Interface pour Angular - fonctions exposées globalement
+        window.AutoProInterface = {
+            toggleSousServices: toggleSousServices,
+            toggleConnexion: toggleConnexion,
+            
+            // Fonction pour mettre à jour les services depuis Angular
+            updateServices: function(services) {
+                const grid = document.getElementById('servicesGrid');
+                grid.innerHTML = '';
+                
+                services.forEach(service => {
+                    const serviceCard = document.createElement('div');
+                    serviceCard.className = 'service-card animate-on-scroll';
+                    serviceCard.innerHTML = `
+                        <div onclick="toggleSousServices('${service._id}')">
+                            <div class="service-icon">🔧</div>
+                            <h3>${service.nom}</h3>
+                            <p>${service.description}</p>
+                        </div>
+                        <ul id="sousServices-${service._id}" style="display: none;">
+                            ${service.sousServices ? service.sousServices.map(ss => 
+                                `<li>${ss.nom} - ${ss.dureeEstimee} min - ${ss.prix} Ar</li>`
+                            ).join('') : ''}
+                        </ul>
+                    `;
+                    
+                    grid.appendChild(serviceCard);
+                    observer.observe(serviceCard);
+                });
+            }
+        };
+
+        // Exemple de données pour les tests (à remplacer par les données MongoDB)
+        const mockServices = [
+            {
+                _id: '1',
+                nom: 'Entretien Complet',
+                description: 'Révision complète de votre véhicule avec diagnostic approfondi',
+                sousServices: [
+                    { _id: '1a', nom: 'Vidange + Filtre', dureeEstimee: 45, prix: 75000 },
+                    { _id: '1b', nom: 'Contrôle freins', dureeEstimee: 30, prix: 35000 },
+                    { _id: '1c', nom: 'Diagnostic électronique', dureeEstimee: 60, prix: 50000 }
+                ]
+            },
+            {
+                _id: '2',
+                nom: 'Réparation Moteur',
+                description: 'Diagnostic et réparation des problèmes moteur par nos experts',
+                sousServices: [
+                    { _id: '2a', nom: 'Réparation distribution', dureeEstimee: 240, prix: 450000 },
+                    { _id: '2b', nom: 'Changement embrayage', dureeEstimee: 300, prix: 650000 },
+                    { _id: '2c', nom: 'Réfection moteur', dureeEstimee: 480, prix: 1200000 }
+                ]
+            },
+            {
+                _id: '3',
+                nom: 'Carrosserie & Peinture',
+                description: 'Remise en état de votre carrosserie avec finition professionnelle',
+                sousServices: [
+                    { _id: '3a', nom: 'Réparation rayure', dureeEstimee: 120, prix: 85000 },
+                    { _id: '3b', nom: 'Peinture complète', dureeEstimee: 600, prix: 800000 },
+                    { _id: '3c', nom: 'Débosselage', dureeEstimee: 180, prix: 120000 }
+                ]
+            }
+        ];
+
+        // Charger les services mockés (remplacer par l'appel Angular)
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.AutoProInterface.updateServices(mockServices);
+            }, 1000);
+        });
     </script>
 </body>
 </html>

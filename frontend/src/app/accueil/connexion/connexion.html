@@ -1,1 +1,483 @@
-<p>connexion works!</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Professionnelle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        h2 {
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            transform: translateY(-30px) scale(0.85);
+            color: #667eea;
+            background: white;
+            padding: 0 8px;
+        }
+
+        .form-label {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            color: #666;
+            font-size: 16px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            padding: 0 4px;
+        }
+
+        .form-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .form-input:focus ~ .form-icon {
+            color: #667eea;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 25px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #5a67d8;
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e5e9;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .google { color: #db4437; }
+        .microsoft { color: #00a1f1; }
+        .apple { color: #000; }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #5a67d8;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo-icon">🔐</div>
+            <h2>Connexion</h2>
+            <p class="subtitle">Accédez à votre espace professionnel</p>
+        </div>
+
+       <form (ngSubmit)="seConnecter()" #loginForm="ngForm">
+    <div class="form-group">
+      <input 
+        type="email" 
+        id="emailLogin" 
+        class="form-input" 
+        placeholder=" " 
+        [(ngModel)]="email" 
+        name="email"
+        required>
+      <label for="emailLogin" class="form-label">Adresse email</label>
+      <span class="form-icon">📧</span>
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="password" 
+        id="motDePasseLogin" 
+        class="form-input" 
+        placeholder=" " 
+        [(ngModel)]="motDePasse" 
+        name="motDePasse"
+        required>
+      <label for="motDePasseLogin" class="form-label">Mot de passe</label>
+      <span class="form-icon">🔒</span>
+    </div>
+
+    <div class="forgot-password">
+      <a href="#" (click)="erreur='Fonctionnalité mot de passe oublié non implémentée'">Mot de passe oublié ?</a>
+    </div>
+
+    <button type="submit" class="login-button">
+      <div class="spinner" id="spinner"></div>
+      <span id="buttonText">Se connecter</span>
+    </button>
+
+    <p *ngIf="erreur" class="text-red-500 mt-2">{{ erreur }}</p>
+    <p *ngIf="success" class="text-green-500 mt-2">Connexion réussie !</p>
+  </form>
+
+        <div class="divider">
+            <span>ou continuer avec</span>
+        </div>
+
+        <div class="social-login">
+            <div class="social-btn google" onclick="socialLogin('google')" title="Google">G</div>
+            <div class="social-btn microsoft" onclick="socialLogin('microsoft')" title="Microsoft">Ⓜ</div>
+            <div class="social-btn apple" onclick="socialLogin('apple')" title="Apple">🍎</div>
+        </div>
+
+        <div class="signup-link">
+            Pas encore de compte ? <a routerLink="/inscription" class="underline text-blue-600 hover:text-blue-800">
+            Créer un compte
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Gestion du formulaire de connexion
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            seConnecter();
+        });
+
+        function seConnecter() {
+            const email = document.getElementById('email').value;
+            const motDePasse = document.getElementById('motDePasse').value;
+            const button = document.querySelector('.login-button');
+            const spinner = document.getElementById('spinner');
+            const buttonText = document.getElementById('buttonText');
+
+            // Validation basique
+            if (!email || !motDePasse) {
+                showNotification('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+
+            // Animation de chargement
+            button.classList.add('loading');
+            spinner.style.display = 'inline-block';
+            buttonText.textContent = 'Connexion...';
+
+            // Simulation d'une connexion (à remplacer par votre logique Angular)
+            setTimeout(() => {
+                // Ici, intégrez votre logique de connexion Angular
+                console.log('Tentative de connexion avec:', { email, motDePasse });
+                
+                // Simulation d'une réponse de succès
+                if (email && motDePasse) {
+                    showNotification('Connexion réussie ! Redirection...', 'success');
+                    setTimeout(() => {
+                        // Redirection ou actions post-connexion
+                        console.log('Redirection vers le dashboard...');
+                    }, 1500);
+                } else {
+                    showNotification('Identifiants incorrects', 'error');
+                }
+
+                // Reset du bouton
+                button.classList.remove('loading');
+                spinner.style.display = 'none';
+                buttonText.textContent = 'Se connecter';
+            }, 2000);
+        }
+
+        function socialLogin(provider) {
+            showNotification(`Connexion avec ${provider}...`, 'info');
+            // Logique de connexion sociale
+        }
+
+        function showForgotPassword() {
+            showNotification('Fonctionnalité de récupération de mot de passe', 'info');
+        }
+
+        // function showSignup() {
+        //     showNotification('Redirection vers la page d\'inscription', 'info');
+        // }
+
+        function showNotification(message, type) {
+            // Création d'une notification temporaire
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                font-size: 14px;
+                font-weight: 500;
+                transform: translateX(350px);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(350px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Animation d'entrée pour les éléments du formulaire
+        window.addEventListener('load', function() {
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                setTimeout(() => {
+                    group.style.opacity = '1';
+                    group.style.transform = 'translateY(0)';
+                }, 300 + (index * 100));
+            });
+        });
+
+        // Initialisation des styles pour l'animation
+        document.querySelectorAll('.form-group').forEach(group => {
+            group.style.opacity = '0';
+            group.style.transform = 'translateY(20px)';
+            group.style.transition = 'all 0.5s ease';
+        });
+    </script>
+</body>
+</html>

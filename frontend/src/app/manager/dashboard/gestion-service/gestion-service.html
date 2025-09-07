@@ -1,0 +1,99 @@
+<h2 class="title">Gestion des Services</h2>
+
+<!-- Ajouter Service -->
+<div class="form-section">
+  <h3>Ajouter un service</h3>
+  <input type="text" placeholder="Nom" [(ngModel)]="nouveauService.nom">
+  <input type="text" placeholder="Description" [(ngModel)]="nouveauService.description">
+  <input type="text" placeholder="URL image" [(ngModel)]="nouveauService.image">
+  <button (click)="addService()">Ajouter</button>
+</div>
+
+<!-- Modifier Service -->
+@if (serviceEdit) {
+  <div class="form-section">
+    <h3>Modifier Service</h3>
+    <input type="text" placeholder="Nom" [(ngModel)]="serviceEdit.nom">
+    <input type="text" placeholder="Description" [(ngModel)]="serviceEdit.description">
+    <input type="text" placeholder="URL image" [(ngModel)]="serviceEdit.image">
+    <button (click)="updateService()">Enregistrer</button>
+    <button (click)="serviceEdit = null">Annuler</button>
+  </div>
+}
+
+<!-- Liste Services -->
+<div class="list-section">
+  <h3>Liste des services</h3>
+  @for (s of services(); track s._id) {
+    <div class="service-card">
+      <h4>{{ s.nom }}</h4>
+      <p>{{ s.description }}</p>
+      @if (s.image) {
+        <img [src]="s.image" alt="{{ s.nom }}">
+      }
+      <button (click)="editService(s)">Modifier</button>
+      <button (click)="deleteService(s._id)">Supprimer</button>
+    </div>
+  }
+</div>
+
+<hr>
+
+<h2 class="title">Gestion des Sous-Services</h2>
+
+<!-- Ajouter Sous-Service -->
+<div class="form-section">
+  <h3>Ajouter un sous-service</h3>
+  <input type="text" placeholder="Nom" [(ngModel)]="nouveauSousService.nom">
+  <input type="text" placeholder="Description" [(ngModel)]="nouveauSousService.description">
+  <input type="number" placeholder="Durée (min)" [(ngModel)]="nouveauSousService.dureeEstimee">
+  
+  <!-- Nouveau champ Prix -->
+  <input type="number" placeholder="Prix (Ar)" [(ngModel)]="nouveauSousService.prix">
+
+  <select [(ngModel)]="nouveauSousService.service!._id">
+    <option value="">Sélectionner un service</option>
+    @for (s of services(); track s._id) {
+      <option [value]="s._id">{{ s.nom }}</option>
+    }
+  </select>
+
+  <button (click)="addSousService()">Ajouter</button>
+</div>
+
+<!-- Modifier Sous-Service -->
+@if (sousServiceEdit) {
+  <div class="form-section">
+    <h3>Modifier Sous-Service</h3>
+    <input type="text" placeholder="Nom" [(ngModel)]="sousServiceEdit.nom">
+    <input type="text" placeholder="Description" [(ngModel)]="sousServiceEdit.description">
+    <input type="number" placeholder="Durée (min)" [(ngModel)]="sousServiceEdit.dureeEstimee">
+
+    <!-- Nouveau champ Prix -->
+    <input type="number" placeholder="Prix (Ar)" [(ngModel)]="sousServiceEdit.prix">
+
+    <select [(ngModel)]="sousServiceEdit.service._id">
+      @for (s of services(); track s._id) {
+        <option [value]="s._id">{{ s.nom }}</option>
+      }
+    </select>
+
+    <button (click)="updateSousService()">Enregistrer</button>
+    <button (click)="sousServiceEdit = null">Annuler</button>
+  </div>
+}
+
+
+<!-- Liste Sous-Services -->
+<div class="list-section">
+  <h3>Liste des sous-services</h3>
+  @for (ss of sousServices(); track ss._id) {
+    <div class="service-card">
+      <h4>{{ ss.nom }} ({{ ss.service.nom }})</h4>
+      <p>{{ ss.description }}</p>
+      <p>Durée: {{ ss.dureeEstimee }} min</p>
+      <button (click)="editSousService(ss)">Modifier</button>
+      <button (click)="deleteSousService(ss._id)">Supprimer</button>
+    </div>
+  }
+</div>

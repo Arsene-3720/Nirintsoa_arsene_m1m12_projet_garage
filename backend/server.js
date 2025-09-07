@@ -1,4 +1,5 @@
 // server.js
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -31,8 +32,10 @@ app.use('/uploads/mecaniciens', express.static(path.join(__dirname, 'uploads/mec
 app.use('/api/PostulMeca', require('./routes/postulMecaRoute'));
 app.use('/uploads/cv', express.static(path.join(__dirname, 'uploads/cv')));
 
-app.use('/api/Services', require('./routes/serviceRoute'));
+app.use('/api/services', require('./routes/serviceRoute'));
 app.use('/api/SousServices', require('./routes/sousServiceRoute'));
+
+app.use('/api/creneaux', require('./routes/creneauxRoutes'));
 
 
 const PORT = process.env.PORT || 5000;

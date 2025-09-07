@@ -1,0 +1,31 @@
+<div class="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow">
+  <h2 class="text-2xl font-bold mb-4">Inscription Client</h2>
+
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="space-y-4">
+    <!-- Infos de base -->
+    <input class="w-full p-2 border rounded" placeholder="Nom" [(ngModel)]="clientData.nom" name="nom" required />
+    <input class="w-full p-2 border rounded" placeholder="Prénom" [(ngModel)]="clientData.prenom" name="prenom" required />
+    <input class="w-full p-2 border rounded" placeholder="Email" type="email" [(ngModel)]="clientData.email" name="email" required />
+    <input class="w-full p-2 border rounded" placeholder="Téléphone" [(ngModel)]="clientData.telephone" name="telephone" />
+    <input class="w-full p-2 border rounded" placeholder="Mot de passe" type="password" [(ngModel)]="clientData.motDePasse" name="motDePasse" required />
+    <input class="w-full p-2 border rounded" placeholder="Date de naissance" type="date" [(ngModel)]="clientData.dateNaissance" name="dateNaissance" />
+
+    <!-- Adresse -->
+    <input class="w-full p-2 border rounded" placeholder="Adresse" [(ngModel)]="clientData.adresse" name="adresse" />
+    <input class="w-full p-2 border rounded" placeholder="Code postal" [(ngModel)]="clientData.codePostal" name="codePostal" />
+    <input class="w-full p-2 border rounded" placeholder="Ville" [(ngModel)]="clientData.ville" name="ville" />
+    <textarea class="w-full p-2 border rounded" placeholder="Autres infos" [(ngModel)]="clientData.autresInfos" name="autresInfos"></textarea>
+
+    <!-- Véhicule -->
+    <h3 class="text-lg font-semibold mt-4">Véhicule</h3>
+    <input class="w-full p-2 border rounded" placeholder="Marque" [(ngModel)]="clientData.vehicule.marque" name="vehiculeMarque" />
+    <input class="w-full p-2 border rounded" placeholder="Modèle" [(ngModel)]="clientData.vehicule.modele" name="vehiculeModele" />
+    <input class="w-full p-2 border rounded" placeholder="Immatriculation" [(ngModel)]="clientData.vehicule.immatriculation" name="vehiculeImmatriculation" />
+    <input class="w-full p-2 border rounded" placeholder="Année" type="number" [(ngModel)]="clientData.vehicule.annee" name="vehiculeAnnee" />
+
+    <button class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">S'inscrire</button>
+  </form>
+
+  <p class="mt-4 text-center text-red-500">{{ message }}</p>
+</div>
+

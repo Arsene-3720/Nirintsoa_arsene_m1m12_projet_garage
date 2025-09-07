@@ -37,18 +37,36 @@ export default class LoginMecanicienComponent {
 
   http = inject(HttpClient);
   router = inject(Router);
+  
 
+  
   login() {
-    this.http.post<any>('http://localhost:5000/api/login-mecanicien', {
+    this.http.post<any>('http://localhost:5000/api/Mecaniciens/login-mecanicien', {
       email: this.email,
       password: this.password
     }).subscribe({
       next: res => {
-        this.success = true;
+        this.success = false;
         this.erreur = '';
-        console.log('Connexion réussie', res);
-        // Rediriger ou stocker les infos si besoin
-        // this.router.navigate(['/mecanicien/dashboard']);
+
+        if (res.status === 'accepted') {
+          // Connexion réussie
+          this.success = true;
+          localStorage.setItem('mecanicien', JSON.stringify(res.mecanicien)); 
+          this.router.navigate(['/mecanicien/dashboard']);
+        } 
+        else if (res.status === 'pending') {
+          this.erreur = "Votre candidature est encore en attente.";
+          this.router.navigate(['/mecanicien/statut-postulation']);
+        } 
+        else if (res.status === 'not-found') {
+          this.erreur = "Aucun compte trouvé, veuillez vous inscrire.";
+          this.router.navigate(['postulation']);
+        } 
+        else if (res.status === 'rejected') {
+          this.erreur = "Votre candidature a été rejetée.";
+          this.router.navigate(['/mecanicien/statut-postulation']);
+        }
       },
       error: err => {
         this.success = false;
@@ -56,4 +74,5 @@ export default class LoginMecanicienComponent {
       }
     });
   }
+
 }

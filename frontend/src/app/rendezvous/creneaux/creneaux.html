@@ -1,0 +1,19 @@
+<h3>Choisissez un créneau disponible :</h3>
+
+<ul>
+  <li *ngFor="let creneau of creneauxDisponibles">
+    <button (click)="selectCreneau(creneau)">
+      {{ creneau.debut | date:'shortTime' }} - {{ creneau.fin | date:'shortTime' }}
+    </button>
+  </li>
+</ul>
+
+<div *ngIf="selectedCreneau">
+  <p>Vous avez sélectionné : {{ selectedCreneau.debut | date:'shortTime' }} - {{ selectedCreneau.fin | date:'shortTime' }}</p>
+  <a [routerLink]="['/rendezvous/formulaire']"
+   [queryParams]="{ sousServiceId: sousServiceId, debut: selectedCreneau.debut, fin: selectedCreneau.fin }"
+   class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+   Confirmer ce créneau
+</a>
+
+</div>

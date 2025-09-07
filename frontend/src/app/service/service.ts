@@ -1,48 +1,59 @@
-// src/app/services/services.component.ts
-import { Component, inject, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ServicesService, Service } from '../services/services';
-
+import { ServicesService } from '../services/services';
 
 @Component({
-  selector: 'app-services',
+  selector: 'app-service-detail',
   standalone: true,
-  imports: [CommonModule],
-  providers: [],
+  imports: [CommonModule, RouterLink],
   template: `
-    <section class="services-container">
-      <h2>Nos Services</h2>
+    <div class="p-4">
+      <h2 class="text-xl font-bold mb-4">Détails du service</h2>
 
-      @if (services().length === 0) {
-        <p>Aucun service disponible.</p>
-      } @else {
-        <ul class="service-list">
-          @for (s of services(); track s._id) {
-            <li class="service-card">
-              <h3>{{ s.nom }}</h3>
-              <p>{{ s.description }}</p>
-              <img [src]="s.image" alt="{{ s.nom }}">
-            </li>
-          }
-        </ul>
-      }
-    </section>
-  `,
-  styles: [`
-    .services-container { padding: 1rem; }
-    .service-list { display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; padding: 0; }
-    .service-card { border: 1px solid #ccc; padding: 1rem; width: 250px; }
-    img { width: 100%; height: auto; border-radius: 0.5rem; }
-  `]
+      <ul>
+        @for (ss of sousServices(); track ss._id) {
+          <li 
+            class="p-2 mb-2 rounded border" 
+            [class.bg-yellow-100]="ss._id === selectedId"
+          >
+            <h3 class="font-semibold">{{ ss.nom }}</h3>
+            <p>Durée : {{ ss.dureeEstimee }} min</p>
+            <p>Prix : {{ ss.prix }} Ar</p>
+            <p>{{ ss.description }}</p>
+            <button 
+          class="mt-2 px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600"
+          [routerLink]="['/rendezvous', ss._id]"
+        >
+          Prendre rendez-vous
+        </button>
+
+        <!-- Bouton Retour -->
+        <button 
+          class="mt-2 ml-2 px-3 py-1 rounded bg-gray-300 hover:bg-gray-400"
+          [routerLink]="['/service']"
+        >
+          Retour
+        </button>
+          </li>
+        }
+      </ul>
+    </div>
+  `
 })
-export class ServicesComponent {
-  private readonly serviceApi = inject(ServicesService);
-  readonly services = signal<Service[]>([]);
+export class ServiceDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private ServiceService = inject(ServicesService);
 
-  constructor() {
-    this.serviceApi.getServices().subscribe({
-      next: data => this.services.set(data),
-      error: () => this.services.set([]),
+  sousServices = signal<any[]>([]);
+  selectedId!: string;
+
+  ngOnInit() {
+    this.selectedId = this.route.snapshot.paramMap.get('id')!;
+
+    // Charger tous les sous-services depuis le backend
+    this.ServiceService.getSousServiceById(this.selectedId).subscribe(data => {
+      this.sousServices.set([data]);
     });
   }
 }

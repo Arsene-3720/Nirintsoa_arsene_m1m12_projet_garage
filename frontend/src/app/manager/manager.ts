@@ -48,9 +48,12 @@ export class LoginManagerComponent {
       
       console.log('🔐 Utilisateur connecté :', utilisateur);
 
+      localStorage.setItem('token', response.token);
+
+      localStorage.setItem('utilisateur', JSON.stringify(utilisateur));
+        
         if (utilisateur.role && utilisateur.role.startsWith('manager')) {
           console.log('Redirection vers le dashboard manager');
-          localStorage.setItem('utilisateur', JSON.stringify(utilisateur));
           this.router.navigate(['/manager/dashboard']);
           
         } else {

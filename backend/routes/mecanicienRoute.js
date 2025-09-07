@@ -69,16 +69,53 @@ router.post('/register-mecanicien', upload.single('images'), async (req, res) =>
 
 
 // POST /mecaniciens/login → Connexion du mécanicien
+// router.post('/login-mecanicien', async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     const mecanicien = await Mecanicien.findOne({ email });
+//     if (!mecanicien || mecanicien.motDePasse !== password) {
+//       return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
+//     }
+//     res.json({ message: 'Connexion réussie', mecanicien });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+// POST /mecaniciens/login → Connexion du mécanicien
+
+
 router.post('/login-mecanicien', async (req, res) => {
   const { email, password } = req.body;
   try {
     const mecanicien = await Mecanicien.findOne({ email });
-    if (!mecanicien || mecanicien.password !== password) {
-      return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
+
+    // Si mécanicien accepté
+    if (mecanicien) {
+      
+      if (!mecanicien || mecanicien.motDePasse !== password) {
+        return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
+      }
+      console.log(`Connexion réussie pour ${email}`);
+      return res.json({ status: 'accepted', message: 'Connexion réussie', mecanicien });
     }
-    res.json({ message: 'Connexion réussie', mecanicien });
+
+    // Vérifier si en attente ou rejet
+    const postulation = await PostulationMecanicien.findOne({ email });
+    if (postulation) {
+      if (postulation.statut === 'en attente') {
+        return res.json({ status: 'pending', message: 'Votre candidature est encore en attente.' });
+      }
+      if (postulation.statut === 'rejetee') {
+        return res.json({ status: 'rejected', message: 'Votre candidature a été rejetée.' });
+      }
+    }
+
+    // Pas encore inscrit
+    return res.json({ status: 'not-found', message: 'Aucun compte trouvé, veuillez vous inscrire.' });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ status: 'error', message: 'Erreur serveur', error: err.message });
   }
 });
 

@@ -1,9 +1,11 @@
 import { Component, OnInit  } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule  } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  standalone: true, // ✅ indispensable en standalone
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

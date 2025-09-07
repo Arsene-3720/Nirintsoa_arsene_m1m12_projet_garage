@@ -14,9 +14,22 @@ const utilisateurSchema = new mongoose.Schema({
   roleModel: { type: String, required: true, enum: ['Client', 'Manager', 'Mecanicien'] }
 });
 
-// 🔒 Hash du mot de passe
+// 🔒 Hash du mot de passe SEULEMENT s'il n'est pas déjà hashé
 utilisateurSchema.pre('save', async function (next) {
   if (!this.isModified('motDePasse')) return next();
+  
+  // ⚠️ CORRECTION : Vérifier si le mot de passe est déjà hashé
+  // Un hash bcrypt commence toujours par $2b$, $2a$, ou $2y$
+  if (this.motDePasse.startsWith('$2b$') || 
+      this.motDePasse.startsWith('$2a$') || 
+      this.motDePasse.startsWith('$2y$')) {
+    // Le mot de passe est déjà hashé, ne pas re-hasher
+    console.log('Mot de passe déjà hashé, pas de re-hashage');
+    return next();
+  }
+  
+  // Le mot de passe n'est pas hashé, on le hashe
+  console.log('Hashage du mot de passe par le pre-save hook');
   this.motDePasse = await bcrypt.hash(this.motDePasse, 10);
   next();
 });
@@ -26,4 +39,5 @@ utilisateurSchema.methods.comparePassword = function (mdp) {
   return bcrypt.compare(mdp, this.motDePasse);
 };
 
-module.exports = mongoose.model('Utilisateur', utilisateurSchema);
+// ✅ Correction pour overwriteModelError
+module.exports = mongoose.models.Utilisateur || mongoose.model('Utilisateur', utilisateurSchema);

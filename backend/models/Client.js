@@ -6,7 +6,6 @@ const clientSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     dateNaissance: Date,
     telephone: String,
-    motDePasse: { type: String, required: true },
     informations: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'InformationClient',

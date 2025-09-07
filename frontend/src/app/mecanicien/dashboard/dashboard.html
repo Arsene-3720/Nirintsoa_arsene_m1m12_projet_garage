@@ -1,1 +1,64 @@
-<p>dashboard works!</p>
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-8">
+  <h2 class="text-2xl font-bold mb-6 text-center">👨‍🔧 Profil du Mécanicien</h2>
+
+  <!-- Infos personnelles -->
+  <div class="flex flex-col gap-3 mb-8">
+    <div class="flex justify-between">
+      <span class="font-semibold">Nom :</span>
+      <span>{{ mecanicien?.nom }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-semibold">Email :</span>
+      <span>{{ mecanicien?.email }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-semibold">Téléphone :</span>
+      <span>{{ mecanicien?.telephone }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="font-semibold">Spécialité :</span>
+      <span>{{ mecanicien?.specialite || 'Non spécifiée' }}</span>
+    </div>
+  </div>
+
+  <!-- 🔧 Tâches assignées -->
+  <h3 class="text-xl font-bold mb-2 text-gray-800">📋 Tâches assignées</h3>
+
+  <!-- En attente -->
+  <div *ngIf="tachesEnAttente.length > 0" class="mb-4">
+    <h4 class="font-semibold text-blue-600 mb-2">⏳ En attente</h4>
+    <ul class="space-y-2">
+      @for (tache of tachesEnAttente; track tache) {
+        <li class="border p-3 rounded-lg bg-blue-50">
+          <!-- <div><strong>{{ tache.titre }}</strong> ({{ tache.groupe ? 'Groupe' : 'Seul' }})</div> -->
+          <!-- <div>Date : {{ tache.date }} à {{ tache.heure }}</div> -->
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- En cours -->
+  <div *ngIf="tachesEnCours.length > 0" class="mb-4">
+    <h4 class="font-semibold text-yellow-600 mb-2">🚧 En cours</h4>
+    <ul class="space-y-2">
+      @for (tache of tachesEnCours; track tache) {
+        <li class="border p-3 rounded-lg bg-yellow-50">
+          <!-- <div><strong>{{ tache.titre }}</strong> ({{ tache.groupe ? 'Groupe' : 'Seul' }})</div> -->
+          <!-- <div>Commencée à : {{ tache.heure }}</div> -->
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- Aucun -->
+  <div *ngIf="tachesEnAttente.length === 0 && tachesEnCours.length === 0" class="text-gray-500">
+    Aucune tâche assignée actuellement.
+  </div>
+
+  <!-- Déconnexion -->
+  <div class="mt-6 text-center">
+    <button (click)="logout()" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
+      Se déconnecter
+    </button>
+  </div>
+</div>

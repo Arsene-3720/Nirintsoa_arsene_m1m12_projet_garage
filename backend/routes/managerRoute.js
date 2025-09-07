@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Manager = require('../models/Manager');
-const Utilisateur = require('../models/utilisateur');
+const Utilisateur = require('../models/Utilisateur');
 const bcrypt = require('bcryptjs');
 
 // 🔒 Création d’un manager
@@ -55,7 +55,7 @@ router.put('/valider-postulation/:email', async (req, res) => {
 
 // 🔐 Connexion
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'tonSecretJWTUltraSecure'; // mets-le dans .env plus tard
+// const JWT_SECRET = 'tonSecretJWTUltraSecure'; // mets-le dans .env plus tard
 
 router.post('/login-manager', async (req, res) => {
   try {
@@ -69,14 +69,18 @@ router.post('/login-manager', async (req, res) => {
 
     // Récupérer les infos spécifiques selon le rôle
     let roleInfos = null;
+    let rolePourToken = utilisateur.role;
+
     if (utilisateur.roleModel === 'Manager') {
       const manager = await Manager.findById(utilisateur.refId);
       if (!manager) return res.status(404).json({ error: 'Manager non trouvé' });
 
+      rolePourToken = manager.type === 'global' ? 'manager-global' : 'manager-client';
+
       roleInfos = {
         id: utilisateur._id,
         email: utilisateur.email,
-        role: utilisateur.role,
+        role: rolePourToken,
         typeManager: manager.type, // 'global' ou 'client-mecanicien'
         nom: manager.nom,
         prenom: manager.prenom
@@ -84,7 +88,7 @@ router.post('/login-manager', async (req, res) => {
     }
 
     // Générer un token JWT
-    const token = jwt.sign({ id: utilisateur._id, role: utilisateur.role }, JWT_SECRET, {
+    const token = jwt.sign({ id: utilisateur._id, role: rolePourToken }, process.env.JWT_SECRET, {
       expiresIn: '7d'
     });
 

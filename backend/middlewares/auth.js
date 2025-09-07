@@ -3,11 +3,14 @@ const jwt = require('jsonwebtoken');
 // Vérifie que le token JWT est valide
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
+  console.log('Header Authorization reçu:', authHeader); // ✅ debug
   if (!authHeader) return res.status(401).json({ error: 'Token requis' });
 
   const token = authHeader.split(' ')[1];
+  console.log('Token extrait:', token); // ✅ debug
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    console.log('Erreur vérification token:', err); // ✅ debug
     if (err) return res.status(403).json({ error: 'Token invalide' });
     req.user = user;
     next();
