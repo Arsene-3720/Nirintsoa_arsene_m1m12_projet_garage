@@ -37,7 +37,7 @@ export class MecanicienVerifPostulationComponent {
         } else if (statut === 'rejeté') {
           this.message = 'Votre demande a été rejetée par le manager.';
         } else {
-           this.message = 'status inconnu. Veuillez contacter le support.';
+           this.router.navigate(['/postulation'])
         }
       },
       error: (err) => {

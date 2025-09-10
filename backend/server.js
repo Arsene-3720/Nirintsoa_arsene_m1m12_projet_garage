@@ -35,7 +35,7 @@ app.use('/uploads/cv', express.static(path.join(__dirname, 'uploads/cv')));
 app.use('/api/services', require('./routes/serviceRoute'));
 app.use('/api/SousServices', require('./routes/sousServiceRoute'));
 
-app.use('/api/creneaux', require('./routes/creneauxRoutes'));
+app.use('/api/creneaux', require('./routes/creneauRoute'));
 
 
 const PORT = process.env.PORT || 5000;

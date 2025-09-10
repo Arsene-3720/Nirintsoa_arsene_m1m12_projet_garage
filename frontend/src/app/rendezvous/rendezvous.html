@@ -1,1 +1,38 @@
-<p>rendezvous works!</p>
+<div class="p-4 max-w-lg mx-auto">
+  <h2 class="text-xl font-bold mb-4">Prendre un rendez-vous</h2>
+
+  <p *ngIf="sousService()">
+    Sous-service sélectionné : <strong>{{ sousService()?.nom }}</strong>
+  </p>
+
+  <div class="mb-2">
+    <label class="block mb-1">Date</label>
+    <input type="date" [(ngModel)]="dateChoisie" (change)="chargerCreneaux(sousService()?._id, dateChoisie())" class="border rounded p-1 w-full">
+  </div>
+
+  <h3 class="font-semibold mt-4">Choisissez un créneau disponible :</h3>
+  <ul>
+    <li *ngFor="let c of creneauxDisponibles()"
+        class="p-2 mb-2 border rounded cursor-pointer"
+        [class.bg-green-200]="creneauSelectionne()?.debut === c.debut && creneauSelectionne()?.fin === c.fin"
+        (click)="selectCreneau(c)">
+      {{ c.debut }} - {{ c.fin }}
+    </li>
+  </ul>
+
+  <form (ngSubmit)="prendreRDV()" class="mt-4">
+    <div class="mb-2">
+      <label class="block mb-1">Nom du client</label>
+      <input type="text" [(ngModel)]="form.nomClient" name="nomClient" class="border rounded p-1 w-full" required>
+    </div>
+
+    <div class="mb-2">
+      <label class="block mb-1">Commentaire</label>
+      <textarea [(ngModel)]="form.commentaire" name="commentaire" class="border rounded p-1 w-full"></textarea>
+    </div>
+
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      Confirmer le rendez-vous
+    </button>
+  </form>
+</div>

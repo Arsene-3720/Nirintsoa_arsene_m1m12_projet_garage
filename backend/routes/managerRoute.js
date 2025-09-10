@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Manager = require('../models/Manager');
-const Utilisateur = require('../models/Utilisateur');
+const Utilisateur = require('../models/utilisateur');
 const bcrypt = require('bcryptjs');
 
 // 🔒 Création d’un manager

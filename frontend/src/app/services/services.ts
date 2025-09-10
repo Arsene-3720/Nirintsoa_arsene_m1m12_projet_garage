@@ -152,13 +152,18 @@ export class ServicesService {
     return this.http.delete<{ message: string }>(`${this.baseUrlSousServices}/${id}`, this.getHeaders());
   }
 }
+
+export interface Creneau {
+  debut: string;
+  fin: string;
+}
 @Injectable({ providedIn: 'root' })
 export class CreneauService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:5000/api/creneaux';
 
-  getCreneaux(sousServiceId: string, date: string): Observable<{ debut: string, fin: string }[]> {
-    return this.http.get<{ debut: string, fin: string }[]>(`${this.baseUrl}/${sousServiceId}?date=${date}`);
+  getCreneaux(sousServiceId: string, date: string): Observable<Creneau[]> {
+    return this.http.get<Creneau[]>(`${this.baseUrl}/${sousServiceId}?date=${date}`);
   }
 }
 
