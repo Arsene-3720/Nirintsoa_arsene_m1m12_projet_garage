@@ -35,7 +35,7 @@ export const authGuard: CanActivateFn = () => {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api';
+  private apiUrl = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/clients';
   private http = inject(HttpClient);
 
   // Suivi état connecté
