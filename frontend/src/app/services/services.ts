@@ -92,8 +92,8 @@ export class AuthService {
 @Injectable({ providedIn: 'root' })
 export class ServicesService {
   private http = inject(HttpClient);
-  private baseUrlServices = `${environment.apiUrl}/api/services`;
-  private baseUrlSousServices = `${environment.apiUrl}/api/sousservices`;
+  private baseUrlServices = `${environment.apiUrl}/services`;
+  private baseUrlSousServices = `${environment.apiUrl}/sousservices`;
 
   private getHeaders() {
     const token = localStorage.getItem('token'); // ton JWT stocké
@@ -161,7 +161,7 @@ export interface Creneau {
 @Injectable({ providedIn: 'root' })
 export class CreneauService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/api/creneaux`;
+  private baseUrl = `${environment.apiUrl}/creneaux`;
 
   getCreneaux(sousServiceId: string, date: string): Observable<Creneau[]> {
     return this.http.get<Creneau[]>(`${this.baseUrl}/${sousServiceId}?date=${date}`);
