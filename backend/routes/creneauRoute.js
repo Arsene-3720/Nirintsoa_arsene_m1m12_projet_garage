@@ -16,12 +16,12 @@ router.get('/:sousServiceId', async (req, res) => {
     }
 
     // 1️⃣ Récupérer le sous-service et son service parent
-    const sousService = await SousService.findById(sousServiceId).populate('serviceId');
+    const sousService = await SousService.findById(sousServiceId).populate('service');
     if (!sousService) {
       return res.status(404).json({ error: 'Sous-service introuvable' });
     }
 
-    const service = sousService.serviceId;
+    const service = sousService.service;
     if (!service) {
       return res.status(404).json({ error: 'Service parent introuvable pour ce sous-service' });
     }

@@ -237,3 +237,14 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+// Exemple backend : routes/clients.routes.js
+router.get('/:clientId/vehicules', async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const vehicules = await Vehicule.find({ client: clientId });
+    res.json(vehicules);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});

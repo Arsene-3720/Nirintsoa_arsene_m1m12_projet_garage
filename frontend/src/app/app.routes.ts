@@ -13,6 +13,7 @@ import { RegisterClientComponent } from './accueil/insription/insription';
 import { ServiceDetailComponent } from './service/service';
 import { RendezvousComponent } from './rendezvous/rendezvous';
 import { authGuard } from './services/services';
+import { ConnexionComponent } from './accueil/connexion/connexion';
  
 
 
@@ -21,6 +22,7 @@ import { authGuard } from './services/services';
 export const routes: Routes = [
   { path: '', component: Accueil },
   { path: 'inscription', component: RegisterClientComponent },
+  { path: 'connexion', component: ConnexionComponent  },
   { path: 'connexion-manager', component: LoginManagerComponent },
   { path: 'manager/dashboard', component: DashboardManagerComponent  },
   { path: 'manager/dashboard/gestion-mecanicien', component: GestionMecaniciensComponent  },

@@ -35,6 +35,9 @@ app.use('/uploads/cv', express.static(path.join(__dirname, 'uploads/cv')));
 app.use('/api/services', require('./routes/serviceRoute'));
 app.use('/api/SousServices', require('./routes/sousServiceRoute'));
 
+app.use('/api/rendezvous', require('./routes/RDVroute'));
+
+
 app.use('/api/creneaux', require('./routes/creneauRoute'));
 
 

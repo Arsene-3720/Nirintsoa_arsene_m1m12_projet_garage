@@ -7,8 +7,20 @@
 
   <div class="mb-2">
     <label class="block mb-1">Date</label>
-    <input type="date" [(ngModel)]="dateChoisie" (change)="chargerCreneaux(sousService()?._id, dateChoisie())" class="border rounded p-1 w-full">
+    <input type="date" [(ngModel)]="dateChoisie" 
+           (change)="chargerCreneaux(sousService()?._id, dateChoisie())"
+           class="border rounded p-1 w-full">
   </div>
+
+  <div class="mb-2" *ngIf="vehicules().length">
+  <label class="block mb-1">Véhicule</label>
+  <select (change)="selectVehicule($any($event.target).value)">
+    <option value="" disabled selected>-- Choisir un véhicule --</option>
+    <option *ngFor="let v of vehicules()" [value]="v._id">
+      {{ v.marque }} {{ v.modele }} - {{ v.immatriculation }}
+    </option>
+  </select>
+</div>
 
   <h3 class="font-semibold mt-4">Choisissez un créneau disponible :</h3>
   <ul>
@@ -23,12 +35,7 @@
   <form (ngSubmit)="prendreRDV()" class="mt-4">
     <div class="mb-2">
       <label class="block mb-1">Nom du client</label>
-      <input type="text" [(ngModel)]="form.nomClient" name="nomClient" class="border rounded p-1 w-full" required>
-    </div>
-
-    <div class="mb-2">
-      <label class="block mb-1">Commentaire</label>
-      <textarea [(ngModel)]="form.commentaire" name="commentaire" class="border rounded p-1 w-full"></textarea>
+      <input type="text" [(ngModel)]="form.nomClient" name="nomClient" class="border rounded p-1 w-full" readonly>
     </div>
 
     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
