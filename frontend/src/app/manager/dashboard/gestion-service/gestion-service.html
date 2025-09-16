@@ -1,99 +1,511 @@
-<h2 class="title">Gestion des Services</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 2px;
+        }
+        
+        .section-divider {
+            margin: 4rem 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+            border: none;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f1f5f9;
+            position: relative;
+        }
+        
+        .form-section h3::before {
+            content: '⚙️';
+            margin-right: 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .form-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 1px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            color: #334155;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        input::placeholder {
+            color: #94a3b8;
+        }
+        
+        select {
+            cursor: pointer;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: inherit;
+            min-width: 120px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+            box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #475569, #334155);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 116, 139, 0.4);
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            min-width: 100px;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            min-width: 100px;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .list-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+        
+        .list-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f1f5f9;
+            position: relative;
+        }
+        
+        .list-section h3::before {
+            content: '📋';
+            margin-right: 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .list-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 1px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .service-card {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            padding: 1.75rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-card h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+        }
+        
+        .service-card p {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .service-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .duration-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .price-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-left: 0.5rem;
+        }
+        
+        .service-category {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions, .card-actions {
+                flex-direction: column;
+            }
+            
+            button {
+                min-width: auto;
+            }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #64748b;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">Gestion des Services</h2>
 
-<!-- Ajouter Service -->
-<div class="form-section">
-  <h3>Ajouter un service</h3>
-  <input type="text" placeholder="Nom" [(ngModel)]="nouveauService.nom">
-  <input type="text" placeholder="Description" [(ngModel)]="nouveauService.description">
-  <input type="text" placeholder="URL image" [(ngModel)]="nouveauService.image">
-  <button (click)="addService()">Ajouter</button>
-</div>
+        <!-- Ajouter Service -->
+        <div class="form-section">
+            <h3>Ajouter un service</h3>
+            <div class="form-grid">
+                <input type="text" placeholder="Nom du service" [(ngModel)]="nouveauService.nom">
+                <input type="text" placeholder="Description détaillée" [(ngModel)]="nouveauService.description">
+                <input type="text" placeholder="URL de l'image" [(ngModel)]="nouveauService.image">
+            </div>
+            <div class="form-actions">
+                <button class="btn-primary" (click)="addService()">✨ Ajouter le Service</button>
+            </div>
+        </div>
 
-<!-- Modifier Service -->
-@if (serviceEdit) {
-  <div class="form-section">
-    <h3>Modifier Service</h3>
-    <input type="text" placeholder="Nom" [(ngModel)]="serviceEdit.nom">
-    <input type="text" placeholder="Description" [(ngModel)]="serviceEdit.description">
-    <input type="text" placeholder="URL image" [(ngModel)]="serviceEdit.image">
-    <button (click)="updateService()">Enregistrer</button>
-    <button (click)="serviceEdit = null">Annuler</button>
-  </div>
-}
+        <!-- Modifier Service -->
+        @if (serviceEdit) {
+            <div class="form-section">
+                <h3>Modifier Service</h3>
+                <div class="form-grid">
+                    <input type="text" placeholder="Nom du service" [(ngModel)]="serviceEdit.nom">
+                    <input type="text" placeholder="Description détaillée" [(ngModel)]="serviceEdit.description">
+                    <input type="text" placeholder="URL de l'image" [(ngModel)]="serviceEdit.image">
+                </div>
+                <div class="form-actions">
+                    <button class="btn-success" (click)="updateService()">💾 Enregistrer</button>
+                    <button class="btn-secondary" (click)="serviceEdit = null">❌ Annuler</button>
+                </div>
+            </div>
+        }
 
-<!-- Liste Services -->
-<div class="list-section">
-  <h3>Liste des services</h3>
-  @for (s of services(); track s._id) {
-    <div class="service-card">
-      <h4>{{ s.nom }}</h4>
-      <p>{{ s.description }}</p>
-      @if (s.image) {
-        <img [src]="s.image" alt="{{ s.nom }}">
-      }
-      <button (click)="editService(s)">Modifier</button>
-      <button (click)="deleteService(s._id)">Supprimer</button>
+        <!-- Liste Services -->
+        <div class="list-section">
+            <h3>Liste des services</h3>
+            <div class="services-grid">
+                @for (s of services(); track s._id) {
+                    <div class="service-card">
+                        <h4>{{ s.nom }}</h4>
+                        <p>{{ s.description }}</p>
+                        @if (s.image) {
+                            <img [src]="s.image" alt="{{ s.nom }}">
+                        }
+                        <div class="card-actions">
+                            <button class="btn-edit" (click)="editService(s)">✏️ Modifier</button>
+                            <button class="btn-delete" (click)="deleteService(s._id)">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2 class="title">Gestion des Sous-Services</h2>
+
+        <!-- Ajouter Sous-Service -->
+        <div class="form-section">
+            <h3>Ajouter un sous-service</h3>
+            <div class="form-grid">
+                <input type="text" placeholder="Nom du sous-service" [(ngModel)]="nouveauSousService.nom">
+                <input type="text" placeholder="Description détaillée" [(ngModel)]="nouveauSousService.description">
+                <input type="number" placeholder="Durée estimée (minutes)" [(ngModel)]="nouveauSousService.dureeEstimee">
+                <input type="number" placeholder="Prix en Ariary (Ar)" [(ngModel)]="nouveauSousService.prix">
+                <select [(ngModel)]="nouveauSousService.service!._id">
+                    <option value="">Sélectionner un service parent</option>
+                    @for (s of services(); track s._id) {
+                        <option [value]="s._id">{{ s.nom }}</option>
+                    }
+                </select>
+            </div>
+            <div class="form-actions">
+                <button class="btn-primary" (click)="addSousService()">✨ Ajouter le Sous-Service</button>
+            </div>
+        </div>
+
+        <!-- Modifier Sous-Service -->
+        @if (sousServiceEdit) {
+            <div class="form-section">
+                <h3>Modifier Sous-Service</h3>
+                <div class="form-grid">
+                    <input type="text" placeholder="Nom du sous-service" [(ngModel)]="sousServiceEdit.nom">
+                    <input type="text" placeholder="Description détaillée" [(ngModel)]="sousServiceEdit.description">
+                    <input type="number" placeholder="Durée estimée (minutes)" [(ngModel)]="sousServiceEdit.dureeEstimee">
+                    <input type="number" placeholder="Prix en Ariary (Ar)" [(ngModel)]="sousServiceEdit.prix">
+                    <select [(ngModel)]="sousServiceEdit.service._id">
+                        @for (s of services(); track s._id) {
+                            <option [value]="s._id">{{ s.nom }}</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-success" (click)="updateSousService()">💾 Enregistrer</button>
+                    <button class="btn-secondary" (click)="sousServiceEdit = null">❌ Annuler</button>
+                </div>
+            </div>
+        }
+
+        <!-- Liste Sous-Services -->
+        <div class="list-section">
+            <h3>Liste des sous-services</h3>
+            <div class="services-grid">
+                @for (ss of sousServices(); track ss._id) {
+                    <div class="service-card">
+                        <div class="service-category">{{ ss.service.nom }}</div>
+                        <h4>{{ ss.nom }}</h4>
+                        <p>{{ ss.description }}</p>
+                        <div>
+                            <span class="duration-badge">⏱️ {{ ss.dureeEstimee }} min</span>
+                            <span class="price-badge">💰 {{ ss.prix }} Ar</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-edit" (click)="editSousService(ss)">✏️ Modifier</button>
+                            <button class="btn-delete" (click)="deleteSousService(ss._id)">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-  }
-</div>
-
-<hr>
-
-<h2 class="title">Gestion des Sous-Services</h2>
-
-<!-- Ajouter Sous-Service -->
-<div class="form-section">
-  <h3>Ajouter un sous-service</h3>
-  <input type="text" placeholder="Nom" [(ngModel)]="nouveauSousService.nom">
-  <input type="text" placeholder="Description" [(ngModel)]="nouveauSousService.description">
-  <input type="number" placeholder="Durée (min)" [(ngModel)]="nouveauSousService.dureeEstimee">
-  
-  <!-- Nouveau champ Prix -->
-  <input type="number" placeholder="Prix (Ar)" [(ngModel)]="nouveauSousService.prix">
-
-  <select [(ngModel)]="nouveauSousService.service!._id">
-    <option value="">Sélectionner un service</option>
-    @for (s of services(); track s._id) {
-      <option [value]="s._id">{{ s.nom }}</option>
-    }
-  </select>
-
-  <button (click)="addSousService()">Ajouter</button>
-</div>
-
-<!-- Modifier Sous-Service -->
-@if (sousServiceEdit) {
-  <div class="form-section">
-    <h3>Modifier Sous-Service</h3>
-    <input type="text" placeholder="Nom" [(ngModel)]="sousServiceEdit.nom">
-    <input type="text" placeholder="Description" [(ngModel)]="sousServiceEdit.description">
-    <input type="number" placeholder="Durée (min)" [(ngModel)]="sousServiceEdit.dureeEstimee">
-
-    <!-- Nouveau champ Prix -->
-    <input type="number" placeholder="Prix (Ar)" [(ngModel)]="sousServiceEdit.prix">
-
-    <select [(ngModel)]="sousServiceEdit.service._id">
-      @for (s of services(); track s._id) {
-        <option [value]="s._id">{{ s.nom }}</option>
-      }
-    </select>
-
-    <button (click)="updateSousService()">Enregistrer</button>
-    <button (click)="sousServiceEdit = null">Annuler</button>
-  </div>
-}
-
-
-<!-- Liste Sous-Services -->
-<div class="list-section">
-  <h3>Liste des sous-services</h3>
-  @for (ss of sousServices(); track ss._id) {
-    <div class="service-card">
-      <h4>{{ ss.nom }} ({{ ss.service.nom }})</h4>
-      <p>{{ ss.description }}</p>
-      <p>Durée: {{ ss.dureeEstimee }} min</p>
-      <button (click)="editSousService(ss)">Modifier</button>
-      <button (click)="deleteSousService(ss._id)">Supprimer</button>
-    </div>
-  }
-</div>
+</body>
+</html>

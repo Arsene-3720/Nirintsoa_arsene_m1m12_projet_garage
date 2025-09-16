@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { inject } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Component({
   standalone: true,
@@ -48,7 +49,7 @@ export class PostulationMecanicienComponent {
     formData.append('specialites', this.specialites);
     if (this.cv) formData.append('cv', this.cv);
 
-    this.http.post('http://localhost:5000/api/PostulMeca/postuler-mecanicien', formData)
+    this.http.post(`${environment.apiUrl}/api/PostulMeca/postuler-mecanicien`, formData)
       .subscribe({
         next: res => {
           this.message = 'Votre postulation a été envoyée avec succès.';

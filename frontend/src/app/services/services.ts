@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CanActivateFn, Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 export interface Service {
   _id?: string;
@@ -35,7 +36,7 @@ export const authGuard: CanActivateFn = () => {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/clients';
+  private apiUrl = `${environment.apiUrl}/clients`;
   private http = inject(HttpClient);
 
   // Suivi état connecté
@@ -91,8 +92,8 @@ export class AuthService {
 @Injectable({ providedIn: 'root' })
 export class ServicesService {
   private http = inject(HttpClient);
-  private baseUrlServices = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/services';
-  private baseUrlSousServices = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/sousservices';
+  private baseUrlServices = `${environment.apiUrl}/api/services`;
+  private baseUrlSousServices = `${environment.apiUrl}/api/sousservices`;
 
   private getHeaders() {
     const token = localStorage.getItem('token'); // ton JWT stocké
@@ -160,7 +161,7 @@ export interface Creneau {
 @Injectable({ providedIn: 'root' })
 export class CreneauService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/creneaux';
+  private baseUrl = `${environment.apiUrl}/api/creneaux`;
 
   getCreneaux(sousServiceId: string, date: string): Observable<Creneau[]> {
     return this.http.get<Creneau[]>(`${this.baseUrl}/${sousServiceId}?date=${date}`);

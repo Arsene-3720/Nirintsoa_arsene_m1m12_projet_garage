@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class GestionMecaniciensComponent implements OnInit {
   }
 
   chargerPostulations() {
-    this.http.get<any[]>('http://localhost:5000/api/PostulMeca/liste-postulation')
+    this.http.get<any[]>(`${environment.apiUrl}/PostulMeca/liste-postulation`)
       .subscribe({
         next: res => this.postulants = res,
         error: () => this.message = 'Erreur lors du chargement des postulants'
@@ -28,7 +29,7 @@ export class GestionMecaniciensComponent implements OnInit {
   }
 
   changerStatut(id: string, statut: string) {
-    this.http.put(`http://localhost:5000/api/PostulMeca/statut-manager/${id}`, { statut })
+    this.http.put(`${environment.apiUrl}/PostulMeca/statut-manager/${id}`, { statut })
       .subscribe({
         next: () => {
           this.message = `Postulation ${statut}`;

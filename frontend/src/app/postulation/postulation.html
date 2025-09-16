@@ -1,33 +1,486 @@
-<div class="p-6 max-w-xl mx-auto">
-  <h2 class="text-2xl font-bold mb-4">Demande de postulation</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande de postulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+        
+        .application-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .application-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+        }
+        
+        .application-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .application-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .application-icon::before {
+            content: '📄';
+            font-size: 2rem;
+        }
+        
+        .application-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .application-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .application-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .form-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 2px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            color: #334155;
+            font-family: inherit;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .file-upload-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+            font-weight: 600;
+            min-height: 100px;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .file-upload-label:hover {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        .file-upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-upload-text {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .file-upload-subtext {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            font-family: inherit;
+        }
+        
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+        }
+        
+        .submit-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .submit-button:disabled {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(156, 163, 175, 0.3);
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #065f46;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .success-message::before {
+            content: '✅';
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-card {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            color: #1e40af;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .info-card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            animation: float 12s ease-in-out infinite;
+        }
+        
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            border-radius: 50%;
+        }
+        
+        .shape-2 {
+            width: 60px;
+            height: 60px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+        
+        .shape-3 {
+            width: 100px;
+            height: 40px;
+            top: 85%;
+            left: 15%;
+            animation-delay: 8s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+                opacity: 0.8;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .application-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+                border-radius: 20px;
+            }
+            
+            .application-title {
+                font-size: 1.75rem;
+            }
+            
+            .application-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 1rem;
+            }
+            
+            .application-icon::before {
+                font-size: 1.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .application-container {
+                padding: 1.5rem;
+            }
+            
+            .application-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        .required-field::after {
+            content: ' *';
+            color: #ef4444;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    
+    <div class="application-container">
+        <div class="application-header">
+            <div class="application-icon"></div>
+            <h2 class="application-title">Demande de postulation</h2>
+            <p class="application-subtitle">Rejoignez notre équipe de professionnels</p>
+        </div>
 
-  <form (ngSubmit)="envoyerPostulation()" #form="ngForm">
-    <label class="block mb-2 font-semibold">Nom</label>
-    <input type="text" [(ngModel)]="nom" name="nom" class="border p-2 w-full mb-4" required />
+        <div class="info-cards">
+            <div class="info-card">
+                <span class="info-card-icon">⚡</span>
+                Processus rapide
+            </div>
+            <div class="info-card">
+                <span class="info-card-icon">🔒</span>
+                Données sécurisées
+            </div>
+            <div class="info-card">
+                <span class="info-card-icon">✨</span>
+                Réponse sous 48h
+            </div>
+        </div>
 
-    <label class="block mb-2 font-semibold">Prénom</label>
-    <input type="text" [(ngModel)]="prenom" name="prenom" class="border p-2 w-full mb-4" />
+        <form (ngSubmit)="envoyerPostulation()" #form="ngForm" class="application-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label required-field">Nom</label>
+                    <input type="text" [(ngModel)]="nom" name="nom" class="form-input" required />
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Prénom</label>
+                    <input type="text" [(ngModel)]="prenom" name="prenom" class="form-input" />
+                </div>
+            </div>
 
-    <label class="block mb-2 font-semibold">Email</label>
-    <input type="email" [(ngModel)]="email" name="email" class="border p-2 w-full mb-4" required />
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label required-field">Email</label>
+                    <input type="email" [(ngModel)]="email" name="email" class="form-input" required />
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Téléphone</label>
+                    <input type="text" [(ngModel)]="telephone" name="telephone" class="form-input" />
+                </div>
+            </div>
 
-    <label class="block mb-2 font-semibold">Téléphone</label>
-    <input type="text" [(ngModel)]="telephone" name="telephone" class="border p-2 w-full mb-4" />
+            <div class="form-group">
+                <label class="form-label">Spécialités (séparées par des virgules)</label>
+                <input type="text" [(ngModel)]="specialites" name="specialites" class="form-input" placeholder="Ex: Mécanique générale, Électronique, Diagnostic..." />
+            </div>
 
-    <label class="block mb-2 font-semibold">Spécialités (séparées par des virgules)</label>
-    <input type="text" [(ngModel)]="specialites" name="specialites" class="border p-2 w-full mb-4" />
+            <div class="form-group">
+                <label class="form-label">Expérience</label>
+                <textarea [(ngModel)]="experience" name="experience" class="form-textarea" placeholder="Décrivez votre parcours professionnel et vos compétences..."></textarea>
+            </div>
 
-    <label class="block mb-2 font-semibold">Expérience</label>
-    <textarea [(ngModel)]="experience" name="experience" class="border p-2 w-full mb-4"></textarea>
+            <div class="form-group">
+                <label class="form-label">CV (PDF)</label>
+                <div class="file-upload-container">
+                    <input type="file" (change)="chargerCV($event)" class="file-upload-input" id="cv-upload" accept=".pdf" />
+                    <label for="cv-upload" class="file-upload-label">
+                        <div class="file-upload-icon">📎</div>
+                        <div class="file-upload-text">Cliquez pour sélectionner votre CV</div>
+                        <div class="file-upload-subtext">Format PDF uniquement</div>
+                    </label>
+                </div>
+            </div>
 
-    <label class="block mb-2 font-semibold">CV (PDF)</label>
-    <input type="file" (change)="chargerCV($event)" class="mb-4" />
+            <button class="submit-button" type="submit" [disabled]="form.invalid">
+                Soumettre ma candidature
+            </button>
+        </form>
 
-    <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit" [disabled]="form.invalid">Soumettre</button>
-  </form>
-
-  @if (message) {
-    <p class="mt-4 text-green-600">{{ message }}</p>
-  }
-</div>
-
+        @if (message) {
+            <div class="success-message">{{ message }}</div>
+        }
+    </div>
+</body>
+</html>

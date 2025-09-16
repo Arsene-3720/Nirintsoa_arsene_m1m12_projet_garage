@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { AuthService } from '../services/services';
+import { environment } from '../../environments/environment';
 
 interface Creneau {
   debut: string;
@@ -50,7 +51,7 @@ export class RendezvousComponent implements OnInit {
     if (!id) return;
 
     // 1️⃣ Charger le sous-service
-    this.http.get(`http://localhost:5000/api/sousservices/${id}`).subscribe({
+    this.http.get(`${environment.apiUrl}/api/sousservices/${id}`).subscribe({
       next: (data: any) => this.sousService.set(data),
       error: () => this.sousService.set(null)
     });
@@ -60,7 +61,7 @@ export class RendezvousComponent implements OnInit {
       if (!user) return;
 
       this.form.nomClient = user.nom || ''; // nom du client
-      this.http.get<Vehicule[]>(`http://localhost:5000/api/clients/${user.refId}/vehicules`)
+      this.http.get<Vehicule[]>(`${environment.apiUrl}/api/clients/${user.refId}/vehicules`)
         .subscribe({
           next: data => this.vehicules.set(data),
           error: () => this.vehicules.set([])
@@ -72,7 +73,7 @@ export class RendezvousComponent implements OnInit {
   }
 
   chargerCreneaux(sousServiceId: string, date: string) {
-    this.http.get<Creneau[]>(`http://localhost:5000/api/creneaux/${sousServiceId}?date=${date}`)
+    this.http.get<Creneau[]>(`${environment.apiUrl}/api/creneaux/${sousServiceId}?date=${date}`)
       .subscribe({
         next: data => this.creneauxDisponibles.set(data),
         error: err => {
@@ -118,7 +119,7 @@ export class RendezvousComponent implements OnInit {
         };
 
         console.log('DEBUG: Payload RDV', payload);
-        this.http.post('http://localhost:5000/api/rendezvous', payload).subscribe({
+        this.http.post(`${environment.apiUrl}/api/rendezvous`, payload).subscribe({
       next: () => {
         alert('Rendez-vous créé avec succès !');
         this.router.navigate(['/services']);

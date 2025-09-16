@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'login-manager',
@@ -31,7 +32,7 @@ export class LoginManagerComponent {
     }
 
     console.log('Tentative de connexion avec :', { email, motDePasse });
-  this.http.post<any>('http://localhost:5000/api/Managers/login-manager', {
+  this.http.post<any>(`${environment.apiUrl}/Managers/login-manager`, {
     email,
     motDePasse
   }).subscribe({

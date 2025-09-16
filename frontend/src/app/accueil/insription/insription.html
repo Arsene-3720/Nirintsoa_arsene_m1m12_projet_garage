@@ -1,31 +1,331 @@
-<div class="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow">
-  <h2 class="text-2xl font-bold mb-4">Inscription Client</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 1px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: #ffffff;
+            transition: all 0.3s ease;
+            color: #334155;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #dc2626;
+            font-weight: 500;
+            padding: 1rem;
+            background: rgba(239, 68, 68, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+        }
+        
+        .required {
+            color: #dc2626;
+            font-size: 0.8rem;
+            margin-left: 0.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .vehicle-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inscription Client</h2>
+        <p class="subtitle">Créez votre compte en quelques étapes simples</p>
+        
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+            <!-- Informations personnelles -->
+            <div class="form-section">
+                <h3 class="section-title">Informations personnelles</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <input 
+                            placeholder="Nom *" 
+                            [(ngModel)]="clientData.nom" 
+                            name="nom" 
+                            required 
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            placeholder="Prénom *" 
+                            [(ngModel)]="clientData.prenom" 
+                            name="prenom" 
+                            required 
+                        />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input 
+                        placeholder="Adresse email *" 
+                        type="email" 
+                        [(ngModel)]="clientData.email" 
+                        name="email" 
+                        required 
+                    />
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <input 
+                            placeholder="Téléphone" 
+                            [(ngModel)]="clientData.telephone" 
+                            name="telephone" 
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            placeholder="Date de naissance" 
+                            type="date" 
+                            [(ngModel)]="clientData.dateNaissance" 
+                            name="dateNaissance" 
+                        />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input 
+                        placeholder="Mot de passe *" 
+                        type="password" 
+                        [(ngModel)]="clientData.motDePasse" 
+                        name="motDePasse" 
+                        required 
+                    />
+                </div>
+            </div>
 
-  <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="space-y-4">
-    <!-- Infos de base -->
-    <input class="w-full p-2 border rounded" placeholder="Nom" [(ngModel)]="clientData.nom" name="nom" required />
-    <input class="w-full p-2 border rounded" placeholder="Prénom" [(ngModel)]="clientData.prenom" name="prenom" required />
-    <input class="w-full p-2 border rounded" placeholder="Email" type="email" [(ngModel)]="clientData.email" name="email" required />
-    <input class="w-full p-2 border rounded" placeholder="Téléphone" [(ngModel)]="clientData.telephone" name="telephone" />
-    <input class="w-full p-2 border rounded" placeholder="Mot de passe" type="password" [(ngModel)]="clientData.motDePasse" name="motDePasse" required />
-    <input class="w-full p-2 border rounded" placeholder="Date de naissance" type="date" [(ngModel)]="clientData.dateNaissance" name="dateNaissance" />
+            <!-- Adresse -->
+            <div class="form-section">
+                <h3 class="section-title">Adresse</h3>
+                
+                <div class="form-group">
+                    <input 
+                        placeholder="Adresse complète" 
+                        [(ngModel)]="clientData.adresse" 
+                        name="adresse" 
+                    />
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <input 
+                            placeholder="Code postal" 
+                            [(ngModel)]="clientData.codePostal" 
+                            name="codePostal" 
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input 
+                            placeholder="Ville" 
+                            [(ngModel)]="clientData.ville" 
+                            name="ville" 
+                        />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <textarea 
+                        placeholder="Informations complémentaires" 
+                        [(ngModel)]="clientData.autresInfos" 
+                        name="autresInfos"
+                    ></textarea>
+                </div>
+            </div>
 
-    <!-- Adresse -->
-    <input class="w-full p-2 border rounded" placeholder="Adresse" [(ngModel)]="clientData.adresse" name="adresse" />
-    <input class="w-full p-2 border rounded" placeholder="Code postal" [(ngModel)]="clientData.codePostal" name="codePostal" />
-    <input class="w-full p-2 border rounded" placeholder="Ville" [(ngModel)]="clientData.ville" name="ville" />
-    <textarea class="w-full p-2 border rounded" placeholder="Autres infos" [(ngModel)]="clientData.autresInfos" name="autresInfos"></textarea>
+            <!-- Véhicule -->
+            <div class="form-section">
+                <div class="vehicle-section">
+                    <h3 class="section-title">Informations véhicule</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input 
+                                placeholder="Marque du véhicule" 
+                                [(ngModel)]="clientData.vehicule.marque" 
+                                name="vehiculeMarque" 
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input 
+                                placeholder="Modèle" 
+                                [(ngModel)]="clientData.vehicule.modele" 
+                                name="vehiculeModele" 
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input 
+                                placeholder="Immatriculation" 
+                                [(ngModel)]="clientData.vehicule.immatriculation" 
+                                name="vehiculeImmatriculation" 
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input 
+                                placeholder="Année" 
+                                type="number" 
+                                [(ngModel)]="clientData.vehicule.annee" 
+                                name="vehiculeAnnee" 
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Véhicule -->
-    <h3 class="text-lg font-semibold mt-4">Véhicule</h3>
-    <input class="w-full p-2 border rounded" placeholder="Marque" [(ngModel)]="clientData.vehicule.marque" name="vehiculeMarque" />
-    <input class="w-full p-2 border rounded" placeholder="Modèle" [(ngModel)]="clientData.vehicule.modele" name="vehiculeModele" />
-    <input class="w-full p-2 border rounded" placeholder="Immatriculation" [(ngModel)]="clientData.vehicule.immatriculation" name="vehiculeImmatriculation" />
-    <input class="w-full p-2 border rounded" placeholder="Année" type="number" [(ngModel)]="clientData.vehicule.annee" name="vehiculeAnnee" />
+            <button type="submit" class="submit-btn">
+                Créer mon compte
+            </button>
+        </form>
 
-    <button class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">S'inscrire</button>
-  </form>
-
-  <p class="mt-4 text-center text-red-500">{{ message }}</p>
-</div>
-
+        <p class="message" *ngIf="message">{{ message }}</p>
+    </div>
+</body>
+</html>

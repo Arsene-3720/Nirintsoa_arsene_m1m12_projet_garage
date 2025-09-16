@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class InscriptionMecanicienComponent {
     formData.append('motDePasse', this.motDePasse);
     if (this.image) formData.append('images', this.image);
 
-    this.http.post('http://localhost:5000/api/Mecaniciens/register-mecanicien', formData)
+    this.http.post(`${environment.apiUrl}/api/Mecaniciens/register-mecanicien`, formData)
       .subscribe({
         next: res => {
           this.message = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
