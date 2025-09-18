@@ -12,12 +12,14 @@ import { environment } from '../../../../environments/environment';
 })
 export class GestionMecaniciensComponent implements OnInit {
   postulants: any[] = [];
+  mecaniciens: any[] = [];  
   message = '';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.chargerPostulations();
+    this.chargerMecaniciens();
   }
 
   chargerPostulations() {
@@ -34,8 +36,17 @@ export class GestionMecaniciensComponent implements OnInit {
         next: () => {
           this.message = `Postulation ${statut}`;
           this.chargerPostulations();
+          this.chargerMecaniciens();
         },
         error: () => this.message = `Erreur lors du changement de statut`
+      });
+  }
+
+  chargerMecaniciens() {
+    this.http.get<any[]>(`${environment.apiUrl}/Mecaniciens/liste-mecaniciens`)
+      .subscribe({
+        next: res => this.mecaniciens = res,
+        error: () => this.message = 'Erreur lors du chargement des mécaniciens'
       });
   }
 }

@@ -41,11 +41,11 @@ export class InscriptionMecanicienComponent {
     formData.append('motDePasse', this.motDePasse);
     if (this.image) formData.append('images', this.image);
 
-    this.http.post(`${environment.apiUrl}/api/Mecaniciens/register-mecanicien`, formData)
+    this.http.post(`${environment.apiUrl}/Mecaniciens/register-mecanicien`, formData)
       .subscribe({
         next: res => {
           this.message = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
-          this.router.navigate(['/connexion-mecanicien']);
+          this.router.navigate(['/mecanicien/connexion']);
         },
         error: err => {
           this.message = 'Erreur lors de l’inscription : ' + err.error?.message || err.message;

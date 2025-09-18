@@ -14,13 +14,18 @@ import { ServiceDetailComponent } from './service/service';
 import { RendezvousComponent } from './rendezvous/rendezvous';
 import { authGuard } from './services/services';
 import { ConnexionComponent } from './accueil/connexion/connexion';
+import { GestionRendezVousComponent } from './manager/dashboard/gestion-rendez-vous/gestion-rendez-vous';
+import { Index } from './index/index';
+
+
  
 
 
 // import { Contact } from './contact';
 
 export const routes: Routes = [
-  { path: '', component: Accueil },
+  { path: '', component: Index },  // 👈 Ici on met ton nouveau index
+  { path: 'accueil', component: Accueil }, 
   { path: 'inscription', component: RegisterClientComponent },
   { path: 'connexion', component: ConnexionComponent  },
   { path: 'connexion-manager', component: LoginManagerComponent },
@@ -35,5 +40,16 @@ export const routes: Routes = [
   { path: 'service/:id', component: ServiceDetailComponent },
   { path: 'rendezvous/:id', component: RendezvousComponent, canActivate: [authGuard] },
   { path: 'rendezvous', component: RendezvousComponent, canActivate: [authGuard] },
+
+
+  {
+    path: 'manager/dashboard',
+    component: DashboardManagerComponent,
+    children: [
+      { path: 'gestion-rendez-vous', component: GestionRendezVousComponent },
+      { path: 'gestion-mecaniciens', component: GestionMecaniciensComponent },
+    ],
+  },
+  { path: '', redirectTo: '/manager/dashboard', pathMatch: 'full' },
 //   { path: 'contact', component: Contact }
 ];

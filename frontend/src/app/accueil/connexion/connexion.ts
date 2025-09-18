@@ -12,8 +12,8 @@ import { AuthService } from '../../services/services';
   templateUrl: './connexion.html'
 })
 export class ConnexionComponent {
-  email = '';
-  motDePasse = '';
+  email = 'nata@gmail.com';
+  motDePasse = 'Natacha3317';
   erreur = '';
   success = false;
   loading = false;
@@ -44,7 +44,7 @@ export class ConnexionComponent {
             this.erreur = '';
             // Redirection
             setTimeout(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/accueil']);
           }, 50); 
 
           } else if (res.status === 'not-found') {

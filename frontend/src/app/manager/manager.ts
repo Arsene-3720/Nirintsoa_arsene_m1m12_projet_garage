@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'login-manager',
@@ -17,10 +15,21 @@ export class LoginManagerComponent {
   motDePasse = new FormControl('');
   erreur = '';
 
-  private http = inject(HttpClient);
   private router = inject(Router);
 
-
+  // ✅ Comptes managers enregistrés en dur
+  private comptesManagers = [
+    {
+      email: 'admin@mail.com',
+      motDePasse: '1234567',
+      typeManager: 'global'
+    },
+    {
+      email: 'admin-meca@mail.com',
+      motDePasse: '1234567',
+      typeManager: 'client-mecanicien'
+    }
+  ];
 
   seConnecter() {
     const email = this.email.value;
@@ -31,42 +40,28 @@ export class LoginManagerComponent {
       return;
     }
 
-    console.log('Tentative de connexion avec :', { email, motDePasse });
-  this.http.post<any>(`${environment.apiUrl}/Managers/login-manager`, {
-    email,
-    motDePasse
-  }).subscribe({
-    next: (response) => {
+    // Vérifier si les identifiants correspondent à un manager enregistré
+    const compte = this.comptesManagers.find(
+      (c) => c.email === email && c.motDePasse === motDePasse
+    );
 
-      console.log('Réponse brute du backend :', response);
-      const utilisateur = response?.utilisateur;
-
-      if (!utilisateur) {
-        this.erreur = 'Réponse invalide : utilisateur manquant';
-        return;
-      }
-
-      
-      console.log('🔐 Utilisateur connecté :', utilisateur);
-
-      localStorage.setItem('token', response.token);
-
-      localStorage.setItem('utilisateur', JSON.stringify(utilisateur));
-        
-        if (utilisateur.role && utilisateur.role.startsWith('manager')) {
-          console.log('Redirection vers le dashboard manager');
-          this.router.navigate(['/manager/dashboard']);
-          
-        } else {
-          console.error('Redirection échouée : rôle invalide', utilisateur.role);
-          this.erreur = 'Vous n’êtes pas un manager';
-        }
-    },
-    error: (err) => {
-      console.error('Erreur de connexion :', err);
-      this.erreur = err.error?.error || 'Erreur lors de la connexion';
+    if (!compte) {
+      this.erreur = 'Identifiants incorrects';
+      return;
     }
-  });
+
+    // Sauvegarde en localStorage
+    localStorage.setItem('utilisateur', JSON.stringify(compte));
+
+    // Redirection selon le type
+    if (compte.typeManager === 'global') {
+      this.router.navigate(['/manager/dashboard']);
+    } else if (compte.typeManager === 'client-mecanicien') {
+      this.router.navigate(['/manager/dashboard']);
+    }
+  }
 }
 
-}
+
+
+

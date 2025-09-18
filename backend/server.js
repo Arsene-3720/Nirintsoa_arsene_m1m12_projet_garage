@@ -25,7 +25,7 @@ app.use('/api/RDV', require('./routes/RDVroute'));
 app.use('/api/Vehicules', require('./routes/vehiculeRoute'));
 app.use('/api/Managers', require('./routes/managerRoute'));
 
-app.use('/api/Mecaniciens', require('./routes/mecanicienRoute'));
+app.use('/api/mecaniciens', require('./routes/mecanicienRoute'));
 app.use('/uploads/mecaniciens', express.static(path.join(__dirname, 'uploads/mecaniciens')));
 
 

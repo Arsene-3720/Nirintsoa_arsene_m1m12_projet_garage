@@ -1,0 +1,44 @@
+<table>
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Service</th>
+      <th>Date</th>
+      <th>Mécaniciens assignés</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (rdv of rendezvous; track rdv._id) {
+      <tr>
+        <td class="p-2 border">
+            @if (rdv.client) {
+                {{ rdv.client.nom }} ({{ rdv.client.email }})
+            } @else {
+                <span>—</span>
+            }
+            </td>
+        <td>{{ rdv.sousService.nom }}</td>
+        <td>{{ rdv.date | date:'short' }} {{ rdv.heureDebut }}-{{ rdv.heureFin }}</td>
+        <td>
+           <ul *ngIf="(rdv.mecaniciens || []).length > 0; else aucunMecanicien">
+      <li *ngFor="let m of rdv.mecaniciens">{{ m.nom }} {{ m.prenom }}</li>
+    </ul>
+    <ng-template #aucunMecanicien>—</ng-template>
+    <ng-template #aucunMecanicien>—</ng-template>
+        </td>
+        <td>
+          <select [(ngModel)]="rdv.selectedMecaniciens" multiple>
+            @for (m of getMecaniciensDisponibles(rdv); track m._id) {
+              <option [ngValue]="m">{{ m.nom }} {{ m.prenom }}</option>
+            }
+          </select>
+          <button (click)="assignerMecaniciens(rdv)">Assigner</button>
+          <button (click)="changerStatut(rdv._id,'confirmé')">Confirmer</button>
+          <button (click)="changerStatut(rdv._id,'terminé')">Terminer</button>
+          <button (click)="changerStatut(rdv._id,'annulé')">Annuler</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

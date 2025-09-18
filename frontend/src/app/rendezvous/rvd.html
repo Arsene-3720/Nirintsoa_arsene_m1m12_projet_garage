@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prendre un rendez-vous</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .appointment-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .appointment-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .appointment-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .appointment-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .service-info {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .service-info strong {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #2c3e50;
+            background: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #2c3e50;
+            background: white url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23667eea' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>") no-repeat right 15px center;
+            background-size: 12px;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .slots-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slots-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .slot-item {
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            color: #34495e;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slot-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .slot-item:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .slot-item:hover::before {
+            left: 100%;
+        }
+
+        .slot-item.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .appointment-form {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e6ed;
+        }
+
+        .readonly-input {
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .confirm-button {
+            width: 100%;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirm-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+
+        .confirm-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .confirm-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .confirm-button:active {
+            transform: translateY(0);
+        }
+
+        /* Animations d'entrée */
+        .appointment-container {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .appointment-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .slots-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .appointment-title {
+                font-size: 24px;
+            }
+        }
+
+        /* Loading animation pour les créneaux */
+        .loading-slots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e6ed;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* États de succès */
+        .success-message {
+            background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="appointment-container">
+        <h2 class="appointment-title">Prendre un rendez-vous</h2>
+        
+        <!-- Simulation de votre code Angular -->
+        <div class="service-info">
+            Sous-service sélectionné : <strong>Révision complète</strong>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-input" min="2025-01-01">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Véhicule</label>
+            <select class="form-select">
+                <option value="" disabled selected>-- Choisir un véhicule --</option>
+                <option value="1">Peugeot 308 - AB-123-CD</option>
+                <option value="2">Renault Clio - EF-456-GH</option>
+                <option value="3">Citroën C3 - IJ-789-KL</option>
+            </select>
+        </div>
+
+        <h3 class="slots-title">Choisissez un créneau disponible :</h3>
+        <ul class="slots-list">
+            <li class="slot-item" onclick="selectSlot(this)">09:00 - 10:00</li>
+            <li class="slot-item" onclick="selectSlot(this)">10:30 - 11:30</li>
+            <li class="slot-item" onclick="selectSlot(this)">14:00 - 15:00</li>
+            <li class="slot-item" onclick="selectSlot(this)">15:30 - 16:30</li>
+            <li class="slot-item" onclick="selectSlot(this)">17:00 - 18:00</li>
+        </ul>
+
+        <form class="appointment-form" onsubmit="confirmAppointment(event)">
+            <div class="form-group">
+                <label class="form-label">Nom du client</label>
+                <input type="text" class="form-input readonly-input" value="client@example.com" readonly>
+            </div>
+
+            <button type="submit" class="confirm-button">
+                Confirmer le rendez-vous
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript optionnel pour les interactions visuelles uniquement
+        function selectSlot(element) {
+            // Supprimer la sélection précédente
+            document.querySelectorAll('.slot-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Ajouter la sélection à l'élément cliqué
+            element.classList.add('selected');
+            
+            // Animation de feedback
+            element.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                element.style.transform = '';
+            }, 150);
+        }
+
+        function confirmAppointment(event) {
+            event.preventDefault();
+            
+            // Vérifier qu'un créneau est sélectionné
+            const selectedSlot = document.querySelector('.slot-item.selected');
+            if (!selectedSlot) {
+                showMessage('Veuillez sélectionner un créneau.', 'error');
+                return;
+            }
+
+            // Simulation de confirmation
+            const button = event.target.querySelector('.confirm-button');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Confirmation en cours...';
+            button.style.background = '#95a5a6';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                showMessage('Rendez-vous confirmé avec succès !', 'success');
+                button.textContent = originalText;
+                button.style.background = '';
+                button.disabled = false;
+            }, 2000);
+        }
+
+        function showMessage(message, type) {
+            // Supprimer les anciens messages
+            const existingMessage = document.querySelector('.success-message, .error-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+            messageDiv.textContent = message;
+            
+            const container = document.querySelector('.appointment-container');
+            container.insertBefore(messageDiv, container.firstChild);
+            
+            // Supprimer le message après 5 secondes
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Animation d'entrée pour les éléments
+        document.addEventListener('DOMContentLoaded', function() {
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Effets de survol avancés
+        document.querySelectorAll('.form-input, .form-select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentNode.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

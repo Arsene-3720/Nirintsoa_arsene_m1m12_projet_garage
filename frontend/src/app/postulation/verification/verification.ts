@@ -441,7 +441,7 @@ export class MecanicienVerifPostulationComponent {
   router = inject(Router);
 
   verifierStatut() {
-    this.http.get<{ statut: string }>(`${environment.apiUrl}/api/PostulMeca/statut-postulation?email=${this.email}`).subscribe({
+    this.http.get<{ statut: string }>(`${environment.apiUrl}/PostulMeca/statut-postulation?email=${this.email}`).subscribe({
       next: (res) => {
         const statut = res.statut;
         if (statut === 'accepte') {

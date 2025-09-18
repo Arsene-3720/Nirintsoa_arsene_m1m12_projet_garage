@@ -22,6 +22,31 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST /postulationmecaniciens → Ajouter une postulation avec upload CV
+// router.post('/postuler-mecanicien', upload.single('cv'), async (req, res) => {
+//   try {
+//     const data = req.body;
+
+//     // Ajouter chemin du CV si présent
+//     if (req.file) {
+//       data.cv = `/uploads/cv/${req.file.filename}`;
+//     }
+
+//     // Vérifier unicité email
+//     const exist = await PostulationMecanicien.findOne({ email: data.email });
+//     if (exist) {
+//       return res.status(400).json({ error: 'Une postulation avec cet email existe déjà.' });
+//     }
+
+//     // Créer la postulation
+//     const postulation = new PostulationMecanicien(data);
+//     await postulation.save();
+
+//     res.status(201).json({ message: 'Postulation enregistrée.', postulation });
+//   } catch (err) {
+//     res.status(400).json({ error: err.message });
+//   }
+// });
+
 router.post('/postuler-mecanicien', upload.single('cv'), async (req, res) => {
   try {
     const data = req.body;
@@ -31,10 +56,24 @@ router.post('/postuler-mecanicien', upload.single('cv'), async (req, res) => {
       data.cv = `/uploads/cv/${req.file.filename}`;
     }
 
+    // Parser les spécialités si elles sont envoyées en JSON
+    if (data.specialites && typeof data.specialites === 'string') {
+      try {
+        data.specialites = JSON.parse(data.specialites);
+      } catch (err) {
+        return res.status(400).json({ error: 'Format spécialités invalide.' });
+      }
+    }
+
     // Vérifier unicité email
     const exist = await PostulationMecanicien.findOne({ email: data.email });
     if (exist) {
       return res.status(400).json({ error: 'Une postulation avec cet email existe déjà.' });
+    }
+
+    // Vérifier qu'il y a au moins une spécialité
+    if (!data.specialites || data.specialites.length === 0) {
+      return res.status(400).json({ error: 'Vous devez choisir au moins une spécialité.' });
     }
 
     // Créer la postulation
@@ -42,10 +81,15 @@ router.post('/postuler-mecanicien', upload.single('cv'), async (req, res) => {
     await postulation.save();
 
     res.status(201).json({ message: 'Postulation enregistrée.', postulation });
+
   } catch (err) {
+    console.error(err);
     res.status(400).json({ error: err.message });
   }
 });
+
+
+module.exports = router;
 
 module.exports = router;
 

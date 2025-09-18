@@ -451,10 +451,16 @@
                 </div>
             </div>
 
+            
+
             <div class="form-group">
-                <label class="form-label">Spécialités (séparées par des virgules)</label>
-                <input type="text" [(ngModel)]="specialites" name="specialites" class="form-input" placeholder="Ex: Mécanique générale, Électronique, Diagnostic..." />
+              <label class="form-label">Spécialités</label>
+              <div *ngFor="let service of services">
+                <input type="checkbox" [checked]="service.checked" (change)="toggleSpecialite(service)" />
+                {{ service.nom }}
+              </div>
             </div>
+
 
             <div class="form-group">
                 <label class="form-label">Expérience</label>

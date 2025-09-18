@@ -13,13 +13,47 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET tous les rendez-vous
 router.get('/', async (req, res) => {
   try {
-    const rdvs = await RendezVous.find();
-    res.json(rdvs);
+    const rdv = await RendezVous.find()
+      .populate('client', 'nom email')
+      .populate('sousService', 'nom')
+      .populate('mecaniciens', 'nom, specialites');
+    res.json(rdv);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// PUT changer statut
+router.put('/:id/statut', async (req, res) => {
+  try {
+    const { statut } = req.body;
+    const rdv = await RendezVous.findByIdAndUpdate(
+      req.params.id,
+      { statut },
+      { new: true }
+    );
+    res.json(rdv);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+module.exports = router;
+
+
+router.put("/:id/assigner-mecanicien", async (req, res) => {
+  try {
+    const rdv = await RendezVous.findByIdAndUpdate(
+      req.params.id,
+      { mecanicien: req.body.mecanicienId },
+      { new: true }
+    ).populate("mecanicien");
+    res.json(rdv);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
-module.exports = router;

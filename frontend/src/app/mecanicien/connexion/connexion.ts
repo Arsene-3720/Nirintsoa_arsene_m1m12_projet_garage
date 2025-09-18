@@ -454,7 +454,7 @@ export default class LoginMecanicienComponent {
 
   
   login() {
-    this.http.post<any>(`${environment.apiUrl}/api/Mecaniciens/login-mecanicien`, {
+    this.http.post<any>(`${environment.apiUrl}/Mecaniciens/login-mecanicien`, {
       email: this.email,
       password: this.password
     }).subscribe({

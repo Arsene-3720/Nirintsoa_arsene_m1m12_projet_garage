@@ -41,17 +41,34 @@ export class RendezvousComponent implements OnInit {
 
   dateChoisie = signal<string>(new Date().toISOString().split('T')[0]);
 
+  dateMin: string = '';
+
   form = {
-    nomClient: '',
-    commentaire: ''
+    emailClient: '' ,
+    
   };
 
   ngOnInit() {
+
+    // calcul de la date minimale
+    const today = new Date();
+    const hour = today.getHours();
+
+
+    if (hour >= 18) {
+    today.setDate(today.getDate() + 1);
+  }
+
+    // format YYYY-MM-DD
+  this.dateMin = today.toISOString().split('T')[0];
+
+  // Initialiser la date choisie au min autorisé
+  this.dateChoisie.set(this.dateMin);
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
     // 1️⃣ Charger le sous-service
-    this.http.get(`${environment.apiUrl}/api/sousservices/${id}`).subscribe({
+    this.http.get(`${environment.apiUrl}/sousservices/${id}`).subscribe({
       next: (data: any) => this.sousService.set(data),
       error: () => this.sousService.set(null)
     });
@@ -60,8 +77,8 @@ export class RendezvousComponent implements OnInit {
     this.authService.user$.subscribe(user => {
       if (!user) return;
 
-      this.form.nomClient = user.nom || ''; // nom du client
-      this.http.get<Vehicule[]>(`${environment.apiUrl}/api/clients/${user.refId}/vehicules`)
+      this.form.emailClient = user.email || ''; // email du client
+      this.http.get<Vehicule[]>(`${environment.apiUrl}/clients/${user.refId}/vehicules`)
         .subscribe({
           next: data => this.vehicules.set(data),
           error: () => this.vehicules.set([])
@@ -73,9 +90,15 @@ export class RendezvousComponent implements OnInit {
   }
 
   chargerCreneaux(sousServiceId: string, date: string) {
-    this.http.get<Creneau[]>(`${environment.apiUrl}/api/creneaux/${sousServiceId}?date=${date}`)
+    console.log("📌 Charger créneaux → sousServiceId:", sousServiceId, "date:", date);
+    this.http.get<Creneau[]>(`${environment.apiUrl}/creneaux/${sousServiceId}?date=${date}`)
+    
       .subscribe({
-        next: data => this.creneauxDisponibles.set(data),
+        next: data => {
+      console.log("✅ Réponse backend créneaux:", data);
+      this.creneauxDisponibles.set(data);
+    },
+        
         error: err => {
           console.error('Erreur chargement créneaux', err);
           this.creneauxDisponibles.set([]);
@@ -107,7 +130,7 @@ export class RendezvousComponent implements OnInit {
         if (!user) return;
 
         const payload = {
-          client: user._id,                // <-- ID du client connecté
+          client: user.refId,                // <-- ID du client connecté
           vehicule: this.vehiculeSelectionne()?._id,
           sousService: this.sousService()?._id,
           mecaniciens: [],                 // si applicable
@@ -115,11 +138,11 @@ export class RendezvousComponent implements OnInit {
           heureDebut: this.creneauSelectionne()?.debut,
           heureFin: this.creneauSelectionne()?.fin,
           urgence: false,
-          commentaireClient: this.form.commentaire
+          
         };
 
         console.log('DEBUG: Payload RDV', payload);
-        this.http.post(`${environment.apiUrl}/api/rendezvous`, payload).subscribe({
+        this.http.post(`${environment.apiUrl}/rendezvous`, payload).subscribe({
       next: () => {
         alert('Rendez-vous créé avec succès !');
         this.router.navigate(['/services']);
