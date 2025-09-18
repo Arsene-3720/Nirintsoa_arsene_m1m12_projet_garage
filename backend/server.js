@@ -20,7 +20,7 @@ app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/clients', require('./routes/clientRoute'));
 
 
-app.use('/api/RDV', require('./routes/RDVroute'));
+app.use('/api/rendezvous', require('./routes/RDVroute'));
 
 app.use('/api/Vehicules', require('./routes/vehiculeRoute'));
 app.use('/api/Managers', require('./routes/managerRoute'));

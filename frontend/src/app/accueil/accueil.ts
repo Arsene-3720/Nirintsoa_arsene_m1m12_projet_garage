@@ -15,7 +15,7 @@ import { AuthService } from '../services/services';
   styleUrl: './accueil.css'
 })
 export class Accueil {
-  afficherConnexion = false;
+  afficherConnexion = signal<boolean>(false);
 
   private serviceApi = inject(ServicesService);
   services = signal<Service[]>([]);
@@ -46,12 +46,17 @@ export class Accueil {
     if (this.authService.isLoggedIn()) {
       // Déconnexion
       this.authService.logout();
-      this.afficherConnexion = false;
+      this.afficherConnexion.set(false);
     } else {
       // Afficher le formulaire
-      this.afficherConnexion = !this.afficherConnexion;
+      this.afficherConnexion.update(v => !v);
     }
   }
+
+  get boutonConnexionLabel() {
+  return this.authService.isConnected() ? 'Déconnexion' : (this.afficherConnexion() ? 'Retour' : 'Connexion');
+}
+
 
   toggleSousServices(serviceId: string) {
     // Si on clique sur le même service, on cache, sinon on affiche

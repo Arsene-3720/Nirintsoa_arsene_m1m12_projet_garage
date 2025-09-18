@@ -674,15 +674,15 @@
                 <li><a href="#contact">Contact</a></li>
                 <li>
                     <button (click)="toggleConnexion()">
-                        {{ (authService.isConnected$ | async) ? 'Déconnexion' : (afficherConnexion ? 'Retour' : 'Connexion') }}
+                        {{ boutonConnexionLabel }}
                     </button>
                 </li>
             </ul>
         </nav>
-        @if (afficherConnexion && !(authService.isConnected$ | async)) {
+        @if (afficherConnexion() && !(authService.isConnected$ | async)) {
             <app-connexion></app-connexion>
         }
-        <div id="connexionPanel" [style.display]="afficherConnexion ? 'block' : 'none'">
+        <div id="connexionPanel" [style.display]="afficherConnexion() ? 'block' : 'none'">
             <!-- Le contenu du panneau de connexion sera géré par le JS -->
         </div>
     </header>
@@ -713,7 +713,7 @@
                     <ul id="sousServices-serviceId" style="display: none;">
                         <li>Sous-service - 30 min - 50€</li>
                     </ul>
-                </div>
+                </div>  
                 -->
                 @for (s of services(); track s._id) {
                     <div class="service-card">

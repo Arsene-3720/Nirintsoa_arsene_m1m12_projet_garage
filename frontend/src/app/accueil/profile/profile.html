@@ -1,0 +1,45 @@
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-4">Profil Client</h2>
+
+  @if(client()) {
+    <div class="mb-4">
+      <p><strong>Nom :</strong> {{ client().nom }} {{ client().prenom }}</p>
+      <p><strong>Email :</strong> {{ client().email }}</p>
+      <p><strong>Téléphone :</strong> {{ client().telephone }}</p>
+    </div>
+  }
+
+  <h3 class="text-lg font-semibold">Mes véhicules</h3>
+  <ul class="list-disc pl-5 mb-4">
+    @for(v of vehicules(); track v._id) {
+      <li>{{ v.marque }} {{ v.modele }} - {{ v.immatriculation }} ({{ v.annee }})</li>
+    }
+  </ul>
+
+  <h3 class="text-lg font-semibold">Mes rendez-vous</h3>
+  <ul class="list-disc pl-5 mb-4">
+    @for(r of rendezvous(); track r._id) {
+      <li>
+        {{ r.date | date:'dd/MM/yyyy' }} - {{ r.heureDebut }} → {{ r.heureFin }}
+        ({{ r.sousService?.nom ?? 'Service inconnu' }})
+        - Véhicule: {{ r.vehicule?.immatriculation }}
+        - Statut: {{ r.statut }}
+      </li>
+    }
+  </ul>
+
+  <h3 class="text-lg font-semibold">Changer mon mot de passe</h3>
+  <div class="mb-2">
+    <input type="password" placeholder="Ancien mot de passe"
+           [(ngModel)]="ancienPassword" class="border p-1 rounded w-full" />
+  </div>
+  <div class="mb-2">
+    <input type="password" placeholder="Nouveau mot de passe"
+           [(ngModel)]="nouveauPassword" class="border p-1 rounded w-full" />
+  </div>
+  <button (click)="changerMotDePasse()" class="bg-blue-500 text-white px-4 py-2 rounded">
+    Changer
+  </button>
+
+  <p class="mt-2 text-red-500">{{ message() }}</p>
+</div>

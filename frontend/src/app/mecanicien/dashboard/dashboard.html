@@ -17,7 +17,7 @@
     </div>
     <div class="flex justify-between">
       <span class="font-semibold">Spécialité :</span>
-      <span>{{ mecanicien?.specialite || 'Non spécifiée' }}</span>
+      <span>{{ mecanicien?.specialites?.join(', ') || 'Non spécifiées' }}</span>
     </div>
   </div>
 

@@ -4,6 +4,7 @@ const Client = require('../models/Client');
 const Utilisateur = require('../models/utilisateur');
 const InformationClient = require('../models/InfoClient');
 const Vehicule = require('../models/Vehicule');
+const RendezVous = require('../models/RDV');
 const bcrypt = require('bcryptjs');
 
 // POST /clients : enregistrement
@@ -131,7 +132,6 @@ router.post('/register-client', async (req, res) => {
 });
 
 
-
 router.post('/login-client', async (req, res) => {
   const { email, motDePasse } = req.body;
 
@@ -203,8 +203,6 @@ module.exports = router;
 
 
 
-
-
 // GET /clients/:id : récupérer un client
 router.get('/:id', async (req, res) => {
   try {
@@ -238,6 +236,9 @@ router.delete('/:id', async (req, res) => {
 
 module.exports = router;
 
+
+
+
 // Exemple backend : routes/clients.routes.js
 router.get('/:clientId/vehicules', async (req, res) => {
   try {
@@ -248,3 +249,45 @@ router.get('/:clientId/vehicules', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+module.exports = router;
+
+
+router.get('/:id/profile', async (req, res) => {
+  try {
+    const client = await Client.findById(req.params.id).select('-password');
+    if (!client) return res.status(404).json({ error: 'Client non trouvé' });
+
+    const vehicules = await Vehicule.find({ client: client._id });
+    const rendezvous = await RendezVous.find({ client: client._id })
+      .populate('vehicule')
+      .populate('sousService');
+
+    res.json({ client, vehicules, rendezvous });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;
+
+router.put('/:id/password', async (req, res) => {
+  try {
+    const { ancien, nouveau } = req.body;
+    const client = await Client.findById(req.params.id);
+    if (!client) return res.status(404).json({ error: 'Client non trouvé' });
+
+    const match = await bcrypt.compare(ancien, client.password);
+    if (!match) return res.status(400).json({ error: 'Ancien mot de passe incorrect' });
+
+    client.password = await bcrypt.hash(nouveau, 10);
+    await client.save();
+
+    res.json({ message: 'Mot de passe mis à jour avec succès' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;
+
