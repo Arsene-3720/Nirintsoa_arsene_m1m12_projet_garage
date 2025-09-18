@@ -14,13 +14,12 @@ import { ServiceDetailComponent } from './service/service';
 import { RendezvousComponent } from './rendezvous/rendezvous';
 import { authGuard } from './services/services';
 import { ConnexionComponent } from './accueil/connexion/connexion';
-<<<<<<< HEAD
+
 import { GestionRendezVousComponent } from './manager/dashboard/gestion-rendez-vous/gestion-rendez-vous';
 import { Index } from './index/index';
 
 
-=======
->>>>>>> 260340f490d8a58a495c7dad29a71c84a547135a
+
  
 
 
@@ -30,11 +29,11 @@ export const routes: Routes = [
   { path: '', component: Index },  // 👈 Ici on met ton nouveau index
   { path: 'accueil', component: Accueil }, 
   { path: 'inscription', component: RegisterClientComponent },
-<<<<<<< HEAD
+
   { path: 'connexion', component: ConnexionComponent  },
-=======
+
   { path: 'connexion', component: ConnexionComponent },
->>>>>>> 260340f490d8a58a495c7dad29a71c84a547135a
+
   { path: 'connexion-manager', component: LoginManagerComponent },
   { path: 'manager/dashboard', component: DashboardManagerComponent  },
   { path: 'manager/dashboard/gestion-mecanicien', component: GestionMecaniciensComponent  },
