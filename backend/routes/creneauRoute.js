@@ -11,74 +11,63 @@ router.get('/:sousServiceId', async (req, res) => {
     const { sousServiceId } = req.params;
     const { date } = req.query;
 
-    if (!date) {
-      return res.status(400).json({ error: 'La date est requise' });
-    }
+    if (!date) return res.status(400).json({ error: 'La date est requise' });
 
-    // 1️⃣ Récupérer le sous-service et son service parent
-    const sousService = await SousService.findById(sousServiceId).populate('serviceId');
-    if (!sousService) {
-      return res.status(404).json({ error: 'Sous-service introuvable' });
-    }
+    // 1️⃣ Récupérer le sous-service + son service parent
+    const sousService = await SousService.findById(sousServiceId).populate('service');
+    if (!sousService) return res.status(404).json({ error: 'Sous-service introuvable' });
 
-    const service = sousService.serviceId;
-    if (!service) {
-      return res.status(404).json({ error: 'Service parent introuvable pour ce sous-service' });
-    }
+    const service = sousService.service;
+    if (!service) return res.status(404).json({ error: 'Service parent introuvable' });
 
-    // 2️⃣ Vérifier fermeture (dimanche)
-    const dayOfWeek = new Date(date).getDay(); // 0 = dimanche
-    if (dayOfWeek === 0) {
-      return res.json([]); // fermé
-    }
+    // 2️⃣ Vérifier que ce n’est pas dimanche
+    const dayOfWeek = new Date(date).getDay();
+    if (dayOfWeek === 0) return res.json([]);
 
-    // 3️⃣ Récupérer les mécaniciens ayant la spécialité du service parent (ex: "Moteur")
-    const mecaniciens = await Mecanicien.find({ specialites: service.nom });
-    if (!mecaniciens.length) {
-      return res.json([]);
-    }
+    // 3️⃣ Récupérer les mécaniciens qui ont ce service dans leur spécialité
+    const mecaniciens = await Mecanicien.find({
+      specialites: { $in: [service.nom] }
+    });
 
-    // 4️⃣ Paramètres horaires
-    const ouverture = 8 * 60;  
-    const fermeture = 18 * 60; 
-    const duree = sousService.dureeEstimee;
+    if (!mecaniciens.length) return res.json([]);
+
+    const ouverture = 8 * 60;   // 08:00
+    const fermeture = 18 * 60;  // 18:00
+    const duree = sousService.dureeEstimee; // en minutes
 
     let tousCreneaux = [];
 
-    // 5️⃣ Générer les créneaux pour chaque mécanicien
     for (const mec of mecaniciens) {
-      // Récupérer les RDV existants pour ce mécanicien ce jour-là
+      // RDV existants ce jour-là
       const rdvs = await RendezVous.find({
         mecaniciens: mec._id,
         date: new Date(date)
       });
 
-      // Générer les créneaux possibles
       for (let debutMin = ouverture; debutMin + duree <= fermeture; debutMin += duree) {
         const finMin = debutMin + duree;
 
-        const debutStr = `${String(Math.floor(debutMin / 60)).padStart(2, '0')}:${String(debutMin % 60).padStart(2, '0')}`;
-        const finStr = `${String(Math.floor(finMin / 60)).padStart(2, '0')}:${String(finMin % 60).padStart(2, '0')}`;
+        const debutStr = `${String(Math.floor(debutMin/60)).padStart(2,'0')}:${String(debutMin%60).padStart(2,'0')}`;
+        const finStr = `${String(Math.floor(finMin/60)).padStart(2,'0')}:${String(finMin%60).padStart(2,'0')}`;
 
-        // Vérifier si le créneau est libre (aucun RDV qui chevauche)
         const estLibre = !rdvs.some(rv => !(finStr <= rv.heureDebut || debutStr >= rv.heureFin));
-
         if (estLibre) {
           tousCreneaux.push({ debut: debutStr, fin: finStr });
         }
       }
     }
 
-    // 6️⃣ Supprimer doublons (si plusieurs mécaniciens libres sur même créneau)
+    // Supprimer doublons
     const uniqueCreneaux = Array.from(new Set(tousCreneaux.map(JSON.stringify))).map(JSON.parse);
 
     res.json(uniqueCreneaux);
 
   } catch (err) {
-    console.error(err);
+    console.error("Erreur route /creneaux :", err);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
 

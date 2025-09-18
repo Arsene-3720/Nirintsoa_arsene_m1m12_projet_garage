@@ -1,3 +1,11 @@
+<style>
+  li {
+  pointer-events: auto !important;
+  z-index: 10;
+}
+
+</style>
+
 <div class="p-4 max-w-lg mx-auto">
   <h2 class="text-xl font-bold mb-4">Prendre un rendez-vous</h2>
 
@@ -10,11 +18,22 @@
     <input type="date" [(ngModel)]="dateChoisie" (change)="chargerCreneaux(sousService()?._id, dateChoisie())" class="border rounded p-1 w-full">
   </div>
 
+  <div class="mb-2" *ngIf="vehicules().length">
+  <label class="block mb-1">Véhicule</label>
+  <select (change)="selectVehicule($any($event.target).value)">
+    <option value="" disabled selected>-- Choisir un véhicule --</option>
+    <option *ngFor="let v of vehicules()" [value]="v._id">
+      {{ v.marque }} {{ v.modele }} - {{ v.immatriculation }}
+    </option>
+  </select>
+</div>
+
+
   <h3 class="font-semibold mt-4">Choisissez un créneau disponible :</h3>
   <ul>
     <li *ngFor="let c of creneauxDisponibles()"
         class="p-2 mb-2 border rounded cursor-pointer"
-        [class.bg-green-200]="creneauSelectionne()?.debut === c.debut && creneauSelectionne()?.fin === c.fin"
+        [class.bg-green-200]="creneauSelectionne() === c"
         (click)="selectCreneau(c)">
       {{ c.debut }} - {{ c.fin }}
     </li>
@@ -23,13 +42,10 @@
   <form (ngSubmit)="prendreRDV()" class="mt-4">
     <div class="mb-2">
       <label class="block mb-1">Nom du client</label>
-      <input type="text" [(ngModel)]="form.nomClient" name="nomClient" class="border rounded p-1 w-full" required>
+       <input type="text" [value]="nomClient()" class="border rounded p-1 w-full" readonly>
     </div>
 
-    <div class="mb-2">
-      <label class="block mb-1">Commentaire</label>
-      <textarea [(ngModel)]="form.commentaire" name="commentaire" class="border rounded p-1 w-full"></textarea>
-    </div>
+    
 
     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
       Confirmer le rendez-vous

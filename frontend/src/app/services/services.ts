@@ -35,17 +35,16 @@ export const authGuard: CanActivateFn = () => {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/clients';
+  private apiUrl = 'http://localhost:5000/api/clients';
   private http = inject(HttpClient);
 
   // Suivi état connecté
   private connectedSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
   isConnected$ = this.connectedSubject.asObservable();
 
-  
 
   // Suivi info utilisateur
-  private userSubject = new BehaviorSubject<any>(this.getUserFromStorage());
+  public userSubject = new BehaviorSubject<any>(this.getUserFromStorage());
   user$ = this.userSubject.asObservable();
 
   private getUserFromStorage(): any {
@@ -53,6 +52,9 @@ export class AuthService {
     return u ? JSON.parse(u) : null;
   }
 
+   getUser() {
+    return this.userSubject.value;
+  }
   // --- Inscription ---
   registerClient(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register-client`, data);
@@ -91,8 +93,8 @@ export class AuthService {
 @Injectable({ providedIn: 'root' })
 export class ServicesService {
   private http = inject(HttpClient);
-  private baseUrlServices = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/services';
-  private baseUrlSousServices = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/sousservices';
+  private baseUrlServices = 'http://localhost:5000/api/services';
+  private baseUrlSousServices = 'http://localhost:5000/api/sousservices';
 
   private getHeaders() {
     const token = localStorage.getItem('token'); // ton JWT stocké
@@ -160,7 +162,7 @@ export interface Creneau {
 @Injectable({ providedIn: 'root' })
 export class CreneauService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://nirintsoa-arsene-m1m12-projet-garage.onrender.com/api/creneaux';
+  private baseUrl = 'http://localhost:5000/api/creneaux';
 
   getCreneaux(sousServiceId: string, date: string): Observable<Creneau[]> {
     return this.http.get<Creneau[]>(`${this.baseUrl}/${sousServiceId}?date=${date}`);
