@@ -4,13 +4,11 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-<<<<<<< HEAD
-  standalone: true, // ✅ indispensable en standalone
-  imports: [CommonModule, RouterModule, RouterLink],
-=======
+
+  
   standalone: true, 
   imports: [CommonModule, RouterModule],
->>>>>>> 260340f490d8a58a495c7dad29a71c84a547135a
+
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
