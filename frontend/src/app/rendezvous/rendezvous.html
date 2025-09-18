@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,18 +8,8 @@
 </head>
 <style>
   /* Styles professionnels pour le formulaire de rendez-vous */
-=======
-<style>
-  li {
-  pointer-events: auto !important;
-  z-index: 10;
-}
 
-</style>
 
-<div class="p-4 max-w-lg mx-auto">
-  <h2 class="text-xl font-bold mb-4">Prendre un rendez-vous</h2>
->>>>>>> 260340f490d8a58a495c7dad29a71c84a547135a
 
 .appointment-container {
   max-width: 600px;
@@ -182,15 +172,22 @@
     gap: 8px;
   }
 }
+
+
+
+
+
 </style>
 <body>
   <div class="appointment-container">
   <h2 class="appointment-title">Prendre un rendez-vous</h2>
 
+  <!-- Sous-service -->
   <p class="service-info" *ngIf="sousService()">
     Sous-service sélectionné : <strong>{{ sousService()?.nom }}</strong>
   </p>
 
+  <!-- Date -->
   <div class="form-group">
     <label class="form-label">Date</label>
     <input type="date" 
@@ -200,7 +197,7 @@
            [min]="dateMin">
   </div>
 
-<<<<<<< HEAD
+  <!-- Véhicule -->
   <div class="form-group" *ngIf="vehicules().length">
     <label class="form-label">Véhicule</label>
     <select class="form-control" (change)="selectVehicule($any($event.target).value)">
@@ -211,35 +208,18 @@
     </select>
   </div>
 
+  <!-- Créneaux -->
   <h3 class="section-title">Choisissez un créneau disponible :</h3>
   <ul class="time-slots">
     <li *ngFor="let c of creneauxDisponibles()"
         class="time-slot"
         [class.time-slot-selected]="creneauSelectionne()?.debut === c.debut && creneauSelectionne()?.fin === c.fin"
-=======
-  <div class="mb-2" *ngIf="vehicules().length">
-  <label class="block mb-1">Véhicule</label>
-  <select (change)="selectVehicule($any($event.target).value)">
-    <option value="" disabled selected>-- Choisir un véhicule --</option>
-    <option *ngFor="let v of vehicules()" [value]="v._id">
-      {{ v.marque }} {{ v.modele }} - {{ v.immatriculation }}
-    </option>
-  </select>
-</div>
-
-
-  <h3 class="font-semibold mt-4">Choisissez un créneau disponible :</h3>
-  <ul>
-    <li *ngFor="let c of creneauxDisponibles()"
-        class="p-2 mb-2 border rounded cursor-pointer"
-        [class.bg-green-200]="creneauSelectionne() === c"
->>>>>>> 260340f490d8a58a495c7dad29a71c84a547135a
         (click)="selectCreneau(c)">
       {{ c.debut }} - {{ c.fin }}
     </li>
   </ul>
 
-<<<<<<< HEAD
+  <!-- Formulaire RDV -->
   <form (ngSubmit)="prendreRDV()" class="appointment-form">
     <div class="form-group">
       <label class="form-label">Email du client</label>
@@ -251,20 +231,10 @@
     </div>
 
     <button type="submit" class="submit-btn">
-=======
-  <form (ngSubmit)="prendreRDV()" class="mt-4">
-    <div class="mb-2">
-      <label class="block mb-1">Nom du client</label>
-       <input type="text" [value]="nomClient()" class="border rounded p-1 w-full" readonly>
-    </div>
-
-    
-
-    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
->>>>>>> 260340f490d8a58a495c7dad29a71c84a547135a
       Confirmer le rendez-vous
     </button>
   </form>
 </div>
+
 </body>
 </html>
